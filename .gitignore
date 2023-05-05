@@ -10,6 +10,7 @@ node_modules/
 .vscode
 *.log
 *-lock.yaml
+environment*.ts
 
 # Include when developing application packages.
 pubspec.lock
