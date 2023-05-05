@@ -2,11 +2,13 @@
 *.excalidraw
 *.pdf
 
-/dist/
-/bazel-out
-/integration/bazel/bazel-*
+dist/
+bazel-out
+integration/bazel/bazel-*
+node_modules/
+.angular
 *.log
-/node_modules/
+*-lock.yaml
 
 # Include when developing application packages.
 pubspec.lock
@@ -38,7 +40,7 @@ yarn-error.log
 .build-analytics
 
 # rollup-test output
-/modules/rollup-test/dist/
+modules/rollup-test/dist/
 
 # User specific bazel settings
 .bazelrc.user
