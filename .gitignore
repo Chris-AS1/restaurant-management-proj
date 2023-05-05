@@ -7,6 +7,7 @@ bazel-out
 integration/bazel/bazel-*
 node_modules/
 .angular
+.vscode
 *.log
 *-lock.yaml
 
@@ -19,9 +20,6 @@ pubspec.lock
 !.devcontainer/recommended-devcontainer.json
 !.devcontainer/recommended-Dockerfile
 .settings/
-.vscode/launch.json
-.vscode/settings.json
-.vscode/tasks.json
 *.swo
 *.swp
 modules/.settings
