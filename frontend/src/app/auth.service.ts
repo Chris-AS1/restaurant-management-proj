@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http"
 import { User } from './models/user.model';
-import { Data } from './models/data.model';
+import { LoginResponse } from './models/login.response.model';
+import { Roles } from './models/user.roles.model';
 import { environment } from 'environment';
 
 @Injectable({
@@ -9,7 +10,9 @@ import { environment } from 'environment';
 })
 export class AuthService {
 
-  private loggedStatus = false;
+  private loggedStatus: boolean = false;
+  private loggedUsername: string | undefined;
+  private loggedRole: Roles | undefined;
 
   constructor(private http: HttpClient) { }
 
@@ -17,12 +20,28 @@ export class AuthService {
     return this.loggedStatus;
   }
 
+  get currentRole() {
+    return this.loggedRole;
+  }
+
+  get currentUsername() {
+    return this.loggedUsername;
+  }
+
   setLoggedIn(v: boolean) {
     this.loggedStatus = v
   }
 
+  setUsername(username: string) {
+    this.loggedUsername = username;
+  }
+
+  setRole(role: Roles) {
+    this.loggedRole = role;
+  }
+
   getUserDetails(u: User) {
-    const data = { "username": u.username, "password": u.password  }
-    return this.http.post<Data>(environment.ROOT_URL, data)
+    const data = { "username": u.username, "password": u.password }
+    return this.http.post<LoginResponse>(environment.ROOT_URL, data)
   }
 }

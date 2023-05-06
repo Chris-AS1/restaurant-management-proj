@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import {Data} from "../models/data.model";
+import { Roles } from '../models/user.roles.model';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,12 +18,20 @@ export class LoginComponent {
 
     console.log(username, password)
 
-    this.Auth.getUserDetails({username, password}).subscribe(data => {
-      if(true) {
-      // if(data.success) {
+    this.Auth.getUserDetails({ username, password }).subscribe(data => {
+      if (data.success) {
         this.Auth.setLoggedIn(true)
-        this.router.navigate(['cashier'])
+        this.Auth.setUsername(username)
+        this.Auth.setRole(data.role)
+
+        if (data.role in Roles) {
+          this.router.navigate([Roles[data.role].toLowerCase()])
+        } else {
+          console.log("Role out of scope", data.role);
+          this.router.navigate([''])
+        }
       } else {
+        this.Auth.setLoggedIn(false)
         this.router.navigate([''])
       }
     })
