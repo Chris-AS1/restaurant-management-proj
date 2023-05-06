@@ -8,6 +8,5 @@ RUN npm install
 
 COPY . .
 
-# RUN ng build --configuration=production
 CMD [ "npm", "start" ]
 
