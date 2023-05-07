@@ -12,6 +12,7 @@ Run `pnpm prod` which will build and run the compiled code, this time without an
 ## Docker Deployment
 ### Production
 ```
+pnpm build
 docker build -t local/taw-project-backend:1.0 -f ./Dockerfile.prod .
 docker run --name backend_node --publish 3000:3000 local/taw-project-backend:1.0
 ```
