@@ -7,9 +7,13 @@ const app = express()
 const port = process.env["API_PORT"] || 3000
 
 app.get('/', (req, res) => {
-    res.send('Hello World!!!!')
+    res.send('')
 })
 
 app.listen(port, () => {
     console.log(`API started on port ${port}`)
 })
+
+// import routes
+var cashier = require('./routes/cashier')
+app.use('/cashier', cashier)

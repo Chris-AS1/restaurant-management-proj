@@ -2,7 +2,7 @@
     "scripts": {
         "run": "node ./dist/api.js",
         "build": "pnpm tsc",
-        "start": "pnpm tsc-watch --onSuccess \"pnpm run\"",
+        "start": "pnpm tsc-watch --onSuccess \"pnpm run run\"",
         "prod": "pnpm build",
         "dev": "pnpm build"
 
