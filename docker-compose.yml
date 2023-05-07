@@ -17,12 +17,14 @@ services:
     networks:
       - taw_default
     restart: unless-stopped
-  
+
   mongo:
     image: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USR}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PSW}
+    volumes:
+      - ./mongo/db_data:/data/db
     networks:
       - taw_default
     restart: always
