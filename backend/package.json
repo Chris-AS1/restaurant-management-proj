@@ -1,0 +1,17 @@
+{
+    "scripts": {
+        "prod": "node ./dist/api.js",
+        "build": "pnpm tsc",
+        "start": "pnpm tsc-watch --onSuccess \"pnpm prod\""
+
+    },
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.17",
+		"@types/node": "^20.1.0",
+		"typescript": "^5.0.4"
+	}
+}
