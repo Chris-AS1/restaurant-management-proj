@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "prod": "node ./dist/api.js",
+        "prod": "pnpm build && node ./dist/api.js",
         "build": "pnpm tsc",
         "start": "pnpm tsc-watch --onSuccess \"pnpm prod\""
 
