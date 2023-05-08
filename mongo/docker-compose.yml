@@ -1,0 +1,17 @@
+services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USR}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PSW}
+    volumes:
+      - ./db_data:/data/db
+    networks:
+      - taw_default
+    restart: always
+
+networks:
+  taw_default:
+    name: taw_default
+    external: true
+
