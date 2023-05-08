@@ -10,6 +10,8 @@ import { BartenderComponent } from './components/bartender/bartender.component';
 import { WaiterComponent } from './components/waiter/waiter.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule} from "./material/material.module"
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { HomeComponent } from './components/home/home.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -10,9 +10,9 @@ import { environment } from 'environment';
 })
 export class AuthService {
 
-  private loggedStatus: boolean = false;
+  private loggedStatus: boolean = true;
   private loggedUsername: string | undefined;
-  private loggedRole: Roles | undefined;
+  private loggedRole: Roles | undefined = Roles.CASHIER;
 
   constructor(private http: HttpClient) { }
 

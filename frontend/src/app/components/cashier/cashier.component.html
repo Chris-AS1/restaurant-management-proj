@@ -1,1 +1,17 @@
-<p>cashier works!</p>
+<p>Cashier Page</p>
+
+<div id="add_user">
+  <h1>Add User</h1>
+
+  <form #f = "ngForm" (submit)="registerUser(f)" noValidate>
+    <input type="text" placeholder="Username" name="username" ngModel required><br>
+    <input type="password" placeholder="Password" name="password" ngModel required><br>
+
+    <mat-radio-group aria-label="Select an option" name="role" ngModel>
+      <mat-radio-button *ngFor="let role of newUserPossibleRoles" value="{{role}}">{{ role }}</mat-radio-button>
+    </mat-radio-group>
+    <br>
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
