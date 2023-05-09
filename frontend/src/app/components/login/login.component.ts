@@ -18,6 +18,7 @@ export class LoginComponent {
 
     console.log(username, password)
 
+    // TODO: test id redirect works
     this.Auth.getUserDetails({ username, password }).subscribe(data => {
       if (data.success) {
         this.Auth.setLoggedIn(true)

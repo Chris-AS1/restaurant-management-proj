@@ -3,15 +3,30 @@
 <div id="add_user">
   <h1>Add User</h1>
 
-  <form #f = "ngForm" (submit)="registerUser(f)" noValidate>
-    <input type="text" placeholder="Username" name="username" ngModel required><br>
-    <input type="password" placeholder="Password" name="password" ngModel required><br>
+  <form #f="ngForm" (submit)="registerUser(f)" noValidate>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Username" name="username" ngModel required>
+    </mat-form-field>
 
-    <mat-radio-group aria-label="Select an option" name="role" ngModel>
-      <mat-radio-button *ngFor="let role of newUserPossibleRoles" value="{{role}}">{{ role }}</mat-radio-button>
-    </mat-radio-group>
     <br>
 
-    <input type="submit" value="Submit">
+    <mat-form-field>
+      <input matInput type="password" placeholder="Password" name="password" ngModel required>
+    </mat-form-field>
+
+    <br>
+
+    <mat-radio-group aria-label="Select an option" name="role" ngModel required>
+      <mat-radio-button *ngFor="let role of newUserPossibleRoles" value="{{role.toLowerCase()}}">{{ role }}</mat-radio-button>
+    </mat-radio-group>
+
+    <br>
+
+    <button mat-raised-button color="primary" type="submit">Register</button>
+    <button mat-raised-button type="reset">Reset</button>
+
+    <div class="res-div" [hidden]="responseMessage === undefined">
+      {{ responseMessage }}
+    </div>
   </form>
 </div>
