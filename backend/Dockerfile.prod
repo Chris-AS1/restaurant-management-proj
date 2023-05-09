@@ -8,7 +8,9 @@ RUN npm install
 
 COPY ./dist .
 
+RUN npm install -g pino-pretty
+
 EXPOSE 3000
 
-CMD [ "node", "./api.js" ]
+CMD [ "sh", "-c", "node ./api.js | pino-pretty"]
 
