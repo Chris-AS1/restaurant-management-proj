@@ -42,6 +42,7 @@ export class AuthService {
 
   getUserDetails(u: User) {
     const data = { "username": u.username, "password": u.password }
-    return this.http.post<LoginResponse>(environment.ROOT_URL, data)
+    // TODO endpoint
+    return this.http.post<LoginResponse>(environment.ROOT_URL + "/login", data)
   }
 }

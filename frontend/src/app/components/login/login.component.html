@@ -1,6 +1,19 @@
-<p>login works!</p>
-<form #f = "ngForm" (submit)="loginUser(f)" noValidate>
-  <input type="text" placeholder="Username" name="username" ngModel required>
-  <input type="password" placeholder="Password" name="password" ngModel required>
-  <input type="submit" value="Submit">
+<h1>Login Page</h1>
+<form #f="ngForm" (submit)="loginUser(f)" noValidate>
+  <!-- <input type="text" placeholder="Username" name="username" ngModel required>
+  <input type="password" placeholder="Password" name="password" ngModel required> -->
+
+  <mat-form-field>
+    <input matInput type="text" placeholder="Username" name="username" ngModel required>
+  </mat-form-field>
+
+  <br>
+
+  <mat-form-field>
+    <input matInput type="password" placeholder="Password" name="password" ngModel required>
+  </mat-form-field>
+
+  <br>
+
+  <button mat-raised-button color="primary" type="submit">Login</button>
 </form>

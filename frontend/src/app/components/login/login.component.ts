@@ -18,23 +18,26 @@ export class LoginComponent {
 
     console.log(username, password)
 
-    // TODO: test id redirect works
-    this.Auth.getUserDetails({ username, password }).subscribe(data => {
-      if (data.success) {
-        this.Auth.setLoggedIn(true)
-        this.Auth.setUsername(username)
-        this.Auth.setRole(data.role)
+    // TODO: test login
+    this.Auth.getUserDetails({ username, password }).subscribe(
+      (data) => {
+        console.log(data);
 
-        if (data.role in Roles) {
-          this.router.navigate([Roles[data.role].toLowerCase()])
+        if (data.success) {
+          this.Auth.setLoggedIn(true)
+          this.Auth.setUsername(username)
+          this.Auth.setRole(data.role)
+
+          if (data.role in Roles) {
+            this.router.navigate([Roles[data.role].toLowerCase()])
+          } else {
+            console.log("Role out of scope", data.role);
+            this.router.navigate([''])
+          }
         } else {
-          console.log("Role out of scope", data.role);
+          this.Auth.setLoggedIn(false)
           this.router.navigate([''])
         }
-      } else {
-        this.Auth.setLoggedIn(false)
-        this.router.navigate([''])
-      }
-    })
+      })
   }
 }

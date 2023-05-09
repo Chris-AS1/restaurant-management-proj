@@ -16,7 +16,7 @@
 
     <br>
 
-    <mat-radio-group aria-label="Select an option" name="role" ngModel required>
+    <mat-radio-group name="role" ngModel required>
       <mat-radio-button *ngFor="let role of newUserPossibleRoles" value="{{role.toLowerCase()}}">{{ role }}</mat-radio-button>
     </mat-radio-group>
 
@@ -30,3 +30,26 @@
     </div>
   </form>
 </div>
+
+
+<div id="create_receipt">
+  <h1>Create Receipt</h1>
+
+  todo table of orders completed AND to pay
+
+  <form #f="ngForm" (submit)="createReceipt(f)" noValidate>
+    <mat-radio-group name="orderN" ngModel required>
+      <mat-radio-button *ngFor="let order of ordersToPay" value="{{order.id}}">{{ order }}</mat-radio-button>
+    </mat-radio-group>
+
+    <br>
+
+    <button mat-raised-button color="primary" type="button" (click)="refreshOrders()">Refresh Orders</button>
+    <button mat-raised-button color="primary" type="submit">View Receipt</button>
+
+    <div class="res-div" [hidden]="receiptMessage === undefined">
+      {{ receiptMessage }}
+    </div>
+  </form>
+</div>
+
