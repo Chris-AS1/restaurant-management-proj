@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { environment } from "./environment";
-import { cashierSchema, cashierModel } from "./schemas/cashier.schema";
+import { cashierSchema, cashierModel, cashierInterface } from "./schemas/cashier.schema";
+import { Cashier } from './models/cashier.model';
 
 const pino = require('pino')()
 
@@ -13,8 +14,8 @@ mongoose
     .catch((error) => pino.error(error));
 
 
-export const addTestCashier = () => {
-    const testCashier = new cashierModel({name: "jeff"})
+export const addTestCashier = (u: Cashier) => {
+    const testCashier = new cashierModel(u)
     testCashier.save()
 }
 

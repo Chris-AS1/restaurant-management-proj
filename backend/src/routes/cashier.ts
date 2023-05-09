@@ -9,7 +9,7 @@ router.get('/dashboard', function(req, res) {
 });
 
 router.get('/add_user', function(req, res) {
-    addTestCashier()
+    addTestCashier({name: "jeff"})
     res.send('');
 });
 
