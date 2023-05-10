@@ -1,7 +1,7 @@
 export interface Order {
   id: number,
-  waitress_id: number,
-  items: [Food|Drink],
+  waiter_id: number,
+  items: (Food|Drink)[],
   order_time: Date,
 }
 

@@ -8,8 +8,6 @@ import { RegisterResponse } from '../../models/register.response.model';
 import { ReceiptResponse } from 'src/app/models/receipt.response.model';
 import { OrderList } from '../../models/orderlist.response.model';
 import { Order } from 'src/app/models/order.model';
-import { Table } from '../../models/table.model';
-import { TableList } from 'src/app/models/tablelist.response.model';
 
 @Component({
   selector: 'app-cashier',
@@ -18,12 +16,11 @@ import { TableList } from 'src/app/models/tablelist.response.model';
 })
 export class CashierComponent {
   newUserPossibleRoles = ["Cashier", "Cook", "Bartender", "Waiter"];
-  selectedRole?: string;
-  registerMessage?: string;
-  receiptMessage?: string
-  ordersToPay?: Order[]
-  ordersPending?: Order[]
-  currentTables?: Table[]
+  selectedRole: string | undefined;
+  responseMessage: string | undefined;
+  receiptMessage: string | undefined;
+  ordersToPay?: [Order]
+  ordersPending?: [Order]
 
   constructor(private http: HttpClient) { }
 
@@ -39,14 +36,8 @@ export class CashierComponent {
 
     // TODO endpoint
     this.http.post<RegisterResponse>(environment.ROOT_URL + "/add_user", { "user": u }).subscribe(
-      (data) => {
-        if (data.success) {
-          this.registerMessage = data.message
-        } else {
-          this.registerMessage = "error"
-        }
-      },
-      (response) => { this.registerMessage = response.message },
+      (data) => { if (data.success) { this.responseMessage = data.message } else { this.responseMessage = "error" } },
+      (response) => { this.responseMessage = response.message },
     )
   }
 
@@ -58,10 +49,9 @@ export class CashierComponent {
   }
 
   refreshPendingOrders() {
-    // TODO endpoint
     this.http.get<OrderList>(environment.ROOT_URL + "/get_pending/").subscribe(
       (data) => {
-        if (data.message.length > 0) {
+        if(data.message.length() > 0) {
           this.ordersPending = data.message
         }
       },
@@ -74,22 +64,6 @@ export class CashierComponent {
     // TODO endpoint
     this.http.get<ReceiptResponse>(environment.ROOT_URL + "/get_receipt/" + order_n).subscribe(
       (data) => { this.receiptMessage = data.message },
-    )
-  }
-
-  getTableAssociations() {
-    // TODO implement API endpoint first
-    // consider moving it to getTables()
-  }
-
-  getTables() {
-    // TODO endpoint
-    this.http.get<TableList>(environment.ROOT_URL + "/get_tables/").subscribe(
-      (data) => {
-        if (data.success && data.message.length > 0) {
-          this.currentTables = data.message
-        }
-      },
     )
   }
 }

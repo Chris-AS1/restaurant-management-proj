@@ -25,8 +25,8 @@
     <button mat-raised-button color="primary" type="submit">Register</button>
     <button mat-raised-button type="reset">Reset</button>
 
-    <div class="res-div" [hidden]="responseMessage === undefined">
-      {{ responseMessage }}
+    <div class="res-div" [hidden]="registerMessage === undefined">
+      {{ registerMessage }}
     </div>
   </form>
 </div>
@@ -35,9 +35,8 @@
 <div id="create_receipt">
   <h1>Create Receipt</h1>
 
-  todo table of orders completed AND to pay
-
   <form #f="ngForm" (submit)="createReceipt(f)" noValidate>
+    <!-- TODO switch to checkbox -->
     <mat-radio-group name="orderN" ngModel required>
       <mat-radio-button *ngFor="let order of ordersToPay" value="{{order.id}}">{{ order }}</mat-radio-button>
     </mat-radio-group>
@@ -51,5 +50,22 @@
       {{ receiptMessage }}
     </div>
   </form>
+
+
+  <h1>View Pending/Waiting Orders</h1>
+  <button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
+
+  <div class="res-div" [hidden]="ordersPending === undefined">
+    {{ receiptMessage }}
+  </div>
+
+
+  <h1>View Table Status</h1>
+  <button mat-raised-button color="primary" type="button" (click)="getTables()">Refresh</button>
+
+  <div class="tables-div" [hidden]="currentTables === undefined">
+    <div *ngFor="let table of currentTables" >{{ table }}</div>
+  </div>
+
 </div>
 
