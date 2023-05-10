@@ -17,7 +17,8 @@
     <br>
 
     <mat-radio-group name="role" ngModel required>
-      <mat-radio-button *ngFor="let role of newUserPossibleRoles" value="{{role.toLowerCase()}}">{{ role }}</mat-radio-button>
+      <mat-radio-button *ngFor="let role of newUserPossibleRoles" value="{{role.toLowerCase()}}">{{ role
+        }}</mat-radio-button>
     </mat-radio-group>
 
     <br>
@@ -50,6 +51,7 @@
       {{ receiptMessage }}
     </div>
   </form>
+</div>
 
 
   <h1>View Pending/Waiting Orders</h1>
@@ -64,8 +66,19 @@
   <button mat-raised-button color="primary" type="button" (click)="getTables()">Refresh</button>
 
   <div class="tables-div" [hidden]="currentTables === undefined">
-    <div *ngFor="let table of currentTables" >{{ table }}</div>
+    <div *ngFor="let table of currentTables">{{ table }}</div>
   </div>
 
-</div>
 
+  <h1>Get Average Processing Time</h1>
+  <button mat-raised-button color="primary" type="button" (click)="getAvgProcessingTime()">Refresh</button>
+  <div class="res-div" [hidden]="avgTimeMessage === undefined">
+    {{ avgTimeMessage }}
+  </div>
+
+
+  <h1>Get Daily Revenue</h1>
+  <button mat-raised-button color="primary" type="button" (click)="getDailyRevenue()">Refresh</button>
+  <div class="res-div" [hidden]="revenueMessage === undefined">
+    {{ revenueMessage }}
+  </div>

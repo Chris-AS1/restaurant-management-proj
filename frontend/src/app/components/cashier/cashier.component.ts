@@ -10,6 +10,7 @@ import { OrderList } from '../../models/orderlist.response.model';
 import { Order } from 'src/app/models/order.model';
 import { Table } from '../../models/table.model';
 import { TableList } from 'src/app/models/tablelist.response.model';
+import { NormalResponse } from 'src/app/models/normal.response.model';
 
 @Component({
   selector: 'app-cashier',
@@ -17,10 +18,16 @@ import { TableList } from 'src/app/models/tablelist.response.model';
   styleUrls: ['./cashier.component.scss']
 })
 export class CashierComponent {
-  newUserPossibleRoles = ["Cashier", "Cook", "Bartender", "Waiter"];
-  selectedRole?: string;
-  registerMessage?: string;
+  roleRoute = environment.ROOT_URL + "/cashier"
+
+  newUserPossibleRoles = ["Cashier", "Cook", "Bartender", "Waiter"]
+  selectedRole?: string
+
+  registerMessage?: string
   receiptMessage?: string
+  avgTimeMessage?: string
+  revenueMessage?: string
+
   ordersToPay?: Order[]
   ordersPending?: Order[]
   currentTables?: Table[]
@@ -38,7 +45,7 @@ export class CashierComponent {
     }
 
     // TODO endpoint
-    this.http.post<RegisterResponse>(environment.ROOT_URL + "/add_user", { "user": u }).subscribe(
+    this.http.post<RegisterResponse>(this.roleRoute + "/add_user", { "user": u }).subscribe(
       (data) => {
         if (data.success) {
           this.registerMessage = data.message
@@ -52,16 +59,16 @@ export class CashierComponent {
 
   refreshOrders() {
     // TODO endpoint
-    this.http.get<OrderList>(environment.ROOT_URL + "/get_receipt/all").subscribe(
+    this.http.get<OrderList>(this.roleRoute + "/get_receipt/all").subscribe(
       (data) => { this.ordersToPay = data.message },
     )
   }
 
   refreshPendingOrders() {
     // TODO endpoint
-    this.http.get<OrderList>(environment.ROOT_URL + "/get_pending/").subscribe(
+    this.http.get<OrderList>(this.roleRoute + "/get_pending/").subscribe(
       (data) => {
-        if (data.message.length > 0) {
+        if (data.success && data.message.length > 0) {
           this.ordersPending = data.message
         }
       },
@@ -72,7 +79,7 @@ export class CashierComponent {
     const order_n = form.value.orderN
 
     // TODO endpoint
-    this.http.get<ReceiptResponse>(environment.ROOT_URL + "/get_receipt/" + order_n).subscribe(
+    this.http.get<ReceiptResponse>(this.roleRoute + "/get_receipt/" + order_n).subscribe(
       (data) => { this.receiptMessage = data.message },
     )
   }
@@ -84,10 +91,32 @@ export class CashierComponent {
 
   getTables() {
     // TODO endpoint
-    this.http.get<TableList>(environment.ROOT_URL + "/get_tables/").subscribe(
+    this.http.get<TableList>(this.roleRoute + "/get_tables/").subscribe(
       (data) => {
         if (data.success && data.message.length > 0) {
           this.currentTables = data.message
+        }
+      },
+    )
+  }
+
+  getAvgProcessingTime() {
+    // TODO endpoint
+    this.http.get<NormalResponse>(this.roleRoute + "/get_avg_time/").subscribe(
+      (data) => {
+        if (data.success) {
+          this.avgTimeMessage = data.message
+        }
+      },
+    )
+  }
+
+  getDailyRevenue() {
+    // TODO endpoint
+    this.http.get<NormalResponse>(this.roleRoute + "/get_daily_revenue/").subscribe(
+      (data) => {
+        if (data.success) {
+          this.revenueMessage = data.message
         }
       },
     )
