@@ -1,0 +1,9 @@
+let en;
+
+if (process.env.NODE_ENV === 'production') {
+    en = require("./environment.prod")
+} else {
+    en = require("./environment.dev")
+}
+
+export const { environment } = en;

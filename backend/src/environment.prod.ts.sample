@@ -1,0 +1,4 @@
+export const environment = {
+    MONGO_URL: "mongodb://usr:psw@ip:port/dbname?authSource=admin",
+};
+
