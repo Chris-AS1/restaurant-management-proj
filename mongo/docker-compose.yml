@@ -3,7 +3,7 @@ services:
   mongo:
     image: mongo:6
     environment:
-      # MONGO_INITDB_DATABASE: "local"
+      # MONGO_INITDB_DATABASE: ${MONGO_DB}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USR}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PSW}
     volumes:
@@ -11,12 +11,13 @@ services:
     networks:
       - taw_default
     ports:
-      - 27017:27017
+      - 27018:27017
     restart: unless-stopped
 
 volumes:
   mongodata:
-    name: mongodata
+    name: taw-project_mongodata
+    external: true
 
 networks:
   taw_default:
