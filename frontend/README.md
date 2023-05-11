@@ -12,15 +12,16 @@ Run `pnpm prod` which is configured as alias for `ng build --configuration=produ
 ## Docker Deployment
 There are 2 ways of deploying a docker container for this project.
 
-### Production
+### Production (nginx)
 ```
+pnpm prod
 docker build -t local/taw-project-frontend:1.0 -f ./Dockerfile.prod .
 docker run --name frontend_nginx --publish 4444:80 local/taw-project-frontend:1.0
 ```
 
 This will deploy a `nginx` server serving the build files under `dist/`.
 
-### Development
+### Development (node/ng)
 ```
 docker build -t local/taw-project-frontend:1.0 -f ./Dockerfile.dev .
 docker run --name frontend_dev --publish 4444:4200 local/taw-project-frontend:1.0
