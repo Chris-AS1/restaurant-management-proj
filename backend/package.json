@@ -2,9 +2,10 @@
     "scripts": {
         "run": "node ./dist/api.js",
         "build": "pnpm tsc",
-        "start": "pnpm tsc-watch --onSuccess \"pnpm run run\"",
+        "start": "pnpm build && NODE_ENV=development node dist/api.js | pino-pretty",
         "prod": "pnpm build",
-        "dev": "pnpm build"
+        "dev": "pnpm build",
+        "watch": "pnpm tsc-watch --onSuccess \"pnpm run run\""
     },
     "dependencies": {
         "cors": "^2.8.5",

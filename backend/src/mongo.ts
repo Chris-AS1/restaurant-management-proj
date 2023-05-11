@@ -1,11 +1,10 @@
-import mongoose, { Schema } from 'mongoose';
-import { environment } from "./environment";
-import { cashierSchema, cashierModel, cashierInterface } from "./schemas/cashier.schema";
-import { Cashier } from './models/cashier.model';
+import mongoose from 'mongoose';
+import { userModel } from './schemas/user.schema';
+import { User } from './models/user.model';
+import { environment } from "./environment"
 
 const pino = require('pino')()
 
-/** Connect to Mongo */
 mongoose
     .connect(environment.MONGO_URL, { retryWrites: true, w: 'majority' })
     .then(() => {
@@ -13,13 +12,16 @@ mongoose
     })
     .catch((error) => pino.error(error));
 
+export const addUser = async (u: User) => {
+    pino.error(u)
 
-export const addTestCashier = (u: Cashier) => {
-    const testCashier = new cashierModel(u)
-    testCashier.save()
+    const newUser = new userModel(u)
+
+    return newUser.save()
 }
 
-export const showCashier = async (id: string) => {
-    return await cashierModel.findById(id).exec()
+export const getUser = async (username: string) => {
+    const a = await userModel.find({ username: username }).exec()
+    pino.info("returned from mongo: " + a)
 }
 

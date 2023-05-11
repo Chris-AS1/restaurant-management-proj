@@ -4,7 +4,7 @@ Backend API written in node+typescript. Using the `express` frameworks at its co
 
 ## Development Server
 
-Run `pnpm start` which will put `tsc` in watch mode and execute the compiled javascript once done.
+Run `pnpm start` which will build the files with `tsc` and then start the API server using `node`
 
 ## Production Build
 Run `pnpm prod && pnpm run run` which will build and run the compiled code, this time without any monitoring for changes.

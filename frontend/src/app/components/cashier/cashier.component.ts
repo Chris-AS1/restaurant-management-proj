@@ -49,11 +49,14 @@ export class CashierComponent {
       (data) => {
         if (data.success) {
           this.registerMessage = data.message
+          form.reset()
         } else {
-          this.registerMessage = "error"
+          this.registerMessage = "Error"
         }
       },
-      (response) => { this.registerMessage = response.message },
+      (response) => {
+        this.registerMessage = "Error: " + response.error.message
+      },
     )
   }
 
