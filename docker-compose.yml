@@ -1,11 +1,12 @@
-version: '3.1'
+version: '3.8'
 services:
   frontend:
     build:
       context: ./frontend/
-      dockerfile: ./frontend/Dockerfile.prod
+      dockerfile: Dockerfile.prod
+    container_name: taw-frontend
     ports:
-      - 4444:80
+      - 14200:80
     networks:
       - taw_default
     restart: unless-stopped
@@ -13,21 +14,31 @@ services:
   backend:
     build:
       context: ./backend/
-      dockerfile: ../backend/Dockerfile
+      dockerfile: Dockerfile.prod
+    container_name: taw-backend
     networks:
       - taw_default
+    depends_on:
+      - mongo
     restart: unless-stopped
 
   mongo:
-    image: mongo
+    image: mongo:6
+    container_name: taw-mongo
     environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USR}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PSW}
     volumes:
-      - ./mongo/db_data:/data/db
+      - mongodata:/data/db
     networks:
       - taw_default
-    restart: always
+    ports:
+      - 27018:27017 # enabled for debug purposes
+    restart: unless-stopped
+
+volumes:
+  mongodata:
 
 networks:
   taw_default:

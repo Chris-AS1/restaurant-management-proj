@@ -16,6 +16,7 @@ services:
 
 volumes:
   mongodata:
+    name: mongodata
 
 networks:
   taw_default:
