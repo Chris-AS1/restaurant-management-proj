@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import express from 'express'
-import { LoginResponse } from "./models/login.response.model"
+import { LoginResponse } from './models/responses/login.response.model';
 const cors = require('cors');
 
 const pino = require('pino')()
@@ -25,6 +25,7 @@ app.post('/login', (req, res) => {
         success: true,
         role: 1
     }
+    // TODO encrypt password, verify password
     res.send(dummy_res)
 })
 

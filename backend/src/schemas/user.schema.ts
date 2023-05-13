@@ -1,10 +1,4 @@
-import moongoose, { Document, Schema } from "mongoose";
-
-export interface UserInterface extends Document {
-    username: String,
-    password: String,
-    role: number,
-}
+import moongoose, {InferSchemaType, Schema } from "mongoose";
 
 export const userSchema = new Schema({
     username: {
@@ -16,5 +10,7 @@ export const userSchema = new Schema({
     role: { type: Number, required: true },
 })
 
-export const userModel = moongoose.model<UserInterface>('User', userSchema)
+export type userType = InferSchemaType<typeof userSchema>
+
+export const userModel = moongoose.model('User', userSchema)
 
