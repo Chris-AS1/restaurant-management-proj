@@ -36,7 +36,10 @@ export class CashierComponent {
 
   registerUser(form: NgForm) {
     // parseInt shouldn't be needed.
-    let roleN: number = parseInt(Roles[form.value.role.toUpperCase()])
+    let roleN: number | undefined
+    if (form.value.role) {
+      roleN = parseInt(Roles[form.value.role.toUpperCase()])
+    }
 
     const u: User = {
       username: form.value.username,
@@ -44,7 +47,6 @@ export class CashierComponent {
       role: roleN
     }
 
-    // TODO endpoint
     this.http.post<RegisterResponse>(this.roleRoute + "/add_user", { "user": u }).subscribe(
       (data) => {
         if (data.success) {
@@ -54,19 +56,25 @@ export class CashierComponent {
           this.registerMessage = "Error"
         }
       },
-      (response) => {
-        this.registerMessage = "Error: " + response.error.message
+      (err) => {
+        this.registerMessage = "Error: " + err.error.message
       },
     )
   }
 
+  // Should get all orders but completed ones
   refreshOrders() {
-    // TODO endpoint
-    this.http.get<OrderList>(this.roleRoute + "/get_receipt/all").subscribe(
-      (data) => { this.ordersToPay = data.message },
-    )
+    this.http.get<OrderList>(this.roleRoute + "/get_orders/").subscribe(
+      (data) => {
+        // TODO sort by table
+        this.ordersToPay = data.message
+      },
+      (err) => {
+        this.receiptMessage = "Error: " + err.error.message
+      })
   }
 
+  // Should get orders waiting to be cooked
   refreshPendingOrders() {
     // TODO endpoint
     this.http.get<OrderList>(this.roleRoute + "/get_pending/").subscribe(
@@ -79,10 +87,19 @@ export class CashierComponent {
   }
 
   createReceipt(form: NgForm) {
-    const order_n = form.value.orderN
+    let selected_ids = []
+    for(const [key,value] of Object.entries(form.value)) {
+      if(value === true) {
+        selected_ids.push(key)
+      }
+    }
+
+    const payload = {
+      "order_ids": selected_ids
+    }
 
     // TODO endpoint
-    this.http.get<ReceiptResponse>(this.roleRoute + "/get_receipt/" + order_n).subscribe(
+    this.http.post<ReceiptResponse>(this.roleRoute + "/get_receipt/", payload).subscribe(
       (data) => { this.receiptMessage = data.message },
     )
   }

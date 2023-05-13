@@ -1,9 +1,9 @@
-<p>Cashier Page</p>
+<h1>Cashier Dashboard</h1>
 
 <div id="add_user">
   <h1>Add User</h1>
 
-  <form #f="ngForm" (submit)="registerUser(f)" noValidate>
+  <form #register_form="ngForm" (submit)="registerUser(register_form)">
     <mat-form-field>
       <input matInput type="text" placeholder="Username" name="username" ngModel required>
     </mat-form-field>
@@ -16,15 +16,14 @@
 
     <br>
 
-    <mat-radio-group name="role" ngModel required>
-      <mat-radio-button *ngFor="let role of newUserPossibleRoles" value="{{role.toLowerCase()}}">{{ role
-        }}</mat-radio-button>
+    <mat-radio-group name="role" required ngModel>
+      <mat-radio-button *ngFor="let role of newUserPossibleRoles" [value]="role.toLowerCase()">{{ role }}</mat-radio-button>
     </mat-radio-group>
 
     <br>
 
     <button mat-raised-button color="primary" type="submit">Register</button>
-    <button mat-raised-button type="reset">Reset</button>
+    <button mat-raised-button type="reset" (click)="registerMessage = undefined">Reset</button>
 
     <div class="res-div" [hidden]="registerMessage === undefined">
       {{ registerMessage }}
@@ -36,11 +35,14 @@
 <div id="create_receipt">
   <h1>Create Receipt</h1>
 
-  <form #f="ngForm" (submit)="createReceipt(f)" noValidate>
-    <!-- TODO switch to checkbox -->
-    <mat-radio-group name="orderN" ngModel required>
-      <mat-radio-button *ngFor="let order of ordersToPay" value="{{order.id}}">{{ order }}</mat-radio-button>
-    </mat-radio-group>
+  <form #receipt_form="ngForm" (submit)="createReceipt(receipt_form)">
+
+    <mat-checkbox *ngFor="let order of ordersToPay" [name]="order._id" ngModel>
+      <h3>ID: {{order._id}}</h3>
+      <h3>Table Number: {{ order.table_num }}</h3>
+      <h3>Dishes ordered:</h3>
+      <li *ngFor="let x of order.items">{{x}}</li>
+    </mat-checkbox>
 
     <br>
 
@@ -54,7 +56,7 @@
 </div>
 
 
-  <h1>View Pending/Waiting Orders</h1>
+  <h1>Orders Waiting to be Cooked</h1>
   <button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
 
   <div class="res-div" [hidden]="ordersPending === undefined">

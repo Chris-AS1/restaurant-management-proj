@@ -1,18 +1,14 @@
 export interface Order {
-  id: number,
-  waiter_id: number,
-  items: (Food|Drink)[],
+  _id: string,
+  table_num: number,
+  items: (string)[],
   order_time: Date,
+  items_info?: (FoodType)[],
 }
 
-interface Food {
+interface FoodType {
   name: string,
   price: number,
   prod_time: number,
-}
-
-interface Drink {
-  name: string,
-  price: number,
-  prod_time: number,
+  drink: boolean,
 }
