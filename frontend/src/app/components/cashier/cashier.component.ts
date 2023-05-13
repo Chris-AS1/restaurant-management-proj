@@ -11,6 +11,7 @@ import { Order } from 'src/app/models/order.model';
 import { Table } from '../../models/table.model';
 import { TableList } from 'src/app/models/tablelist.response.model';
 import { NormalResponse } from 'src/app/models/normal.response.model';
+import { Receipt } from "../../models/receipt.model"
 
 @Component({
   selector: 'app-cashier',
@@ -24,11 +25,15 @@ export class CashierComponent {
   selectedRole?: string
 
   registerMessage?: string
+
   receiptMessage?: string
+  receiptTotal?: Receipt
+
   avgTimeMessage?: string
   revenueMessage?: string
 
   ordersToPay?: Order[]
+  tablesToPay?: number[]
   ordersPending?: Order[]
   currentTables?: Table[]
 
@@ -57,8 +62,8 @@ export class CashierComponent {
         }
       },
       (err) => {
-        this.registerMessage = "Error: " + err.error.message
-      },
+        this.registerMessage = "Error: " + err.statusText
+      }
     )
   }
 
@@ -67,11 +72,29 @@ export class CashierComponent {
     this.http.get<OrderList>(this.roleRoute + "/get_orders/").subscribe(
       (data) => {
         // TODO sort by table
-        this.ordersToPay = data.message
+        const tables_to_pay = new Set<number>()
+        for (let order of data.message) {
+          tables_to_pay.add(order.table_num)
+        }
+
+        // old, used when displaying orders and not tables
+        // this.ordersToPay = data.message
+        this.tablesToPay = Array.from(tables_to_pay)
       },
       (err) => {
-        this.receiptMessage = "Error: " + err.error.message
+        this.receiptMessage = "Error: " + err.statusText
       })
+  }
+
+  createReceipt(form: NgForm) {
+    const table_id = form.value.table_num
+
+    this.http.get<ReceiptResponse>(this.roleRoute + "/get_receipt/" + table_id).subscribe(
+      (data) => { this.receiptTotal = data.message },
+      (err) => {
+        this.receiptMessage = "Error: " + err.statusText
+      }
+    )
   }
 
   // Should get orders waiting to be cooked
@@ -85,25 +108,6 @@ export class CashierComponent {
       },
     )
   }
-
-  createReceipt(form: NgForm) {
-    let selected_ids = []
-    for(const [key,value] of Object.entries(form.value)) {
-      if(value === true) {
-        selected_ids.push(key)
-      }
-    }
-
-    const payload = {
-      "order_ids": selected_ids
-    }
-
-    // TODO endpoint
-    this.http.post<ReceiptResponse>(this.roleRoute + "/get_receipt/", payload).subscribe(
-      (data) => { this.receiptMessage = data.message },
-    )
-  }
-
   getTableAssociations() {
     // TODO implement API endpoint first
     // consider moving it to getTables()

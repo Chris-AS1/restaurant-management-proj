@@ -1,11 +1,10 @@
 import express from "express"
-import { addUser, getUser, getAllOrders } from "./../mongo"
+import { addUser, getUser, getAllOrders, getReceipt } from "./../mongo"
 import { User } from "../models/user.model";
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { RegisterResponse } from "../models/responses/register.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
-import { stringify } from "querystring";
-import { Order } from "../models/order.model";
+import { ReceiptResponse } from "../models/responses/receipt.response";
 
 var router = express.Router();
 
@@ -29,7 +28,7 @@ router.post('/add_user', async function(req, res) {
         }
     ).catch(
         err => {
-            res.status(403)
+            res.status(400)
             res.send({ success: false, message: JSON.stringify(err) } as RegisterResponse)
         }
     )
@@ -52,19 +51,26 @@ router.get('/get_orders', function(req, res) {
     getAllOrders().then(
         data => {
             res.status(200)
-            // TODO convert Date to timestamp
-            console.log(data);
-
+            // TODO consider convertin Date to timestamp
             res.send({ success: true, message: data } as OrderList)
         }).catch(
             err => {
-                res.status(403)
+                res.status(400)
                 res.send({ success: false, message: JSON.stringify(err) } as NormalResponse)
             })
 });
 
-// Has to calculate total price, possibly starting from multiple orders
-router.post('/create_receipt', function(req, res) {
+router.get('/get_receipt/:table_id', function(req, res) {
+    const table_id = parseInt(req.params.table_id)
+    getReceipt(table_id).then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as ReceiptResponse)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: JSON.stringify(err) } as NormalResponse)
+            })
 
 });
 
@@ -81,10 +87,6 @@ router.get('/get_avg_proc_time', function(req, res) {
 });
 
 router.get('/get_daily_revenue', function(req, res) {
-    res.send('');
-});
-
-router.get('/create_receipt', function(req, res) {
     res.send('');
 });
 

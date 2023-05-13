@@ -1,16 +1,22 @@
 import moongoose, { InferSchemaType, Schema } from "mongoose";
+import { tableModel, tableSchema } from "./table.schema";
 
 export const orderSchema = new Schema({
     table_num: {
         type: Number, 
-        require: false
-        // require: true
+        ref: tableModel,
+        required: true,
     },
     items: {
         type: [String],
         required: true,
     },
-    order_time: Date
+    order_time: {
+        type: Date,
+        required: true
+    },
+    /* pending: Boolean,
+    completed: Boolean, */
 })
 
 export type orderType = InferSchemaType<typeof orderSchema>

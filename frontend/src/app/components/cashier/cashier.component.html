@@ -17,7 +17,8 @@
     <br>
 
     <mat-radio-group name="role" required ngModel>
-      <mat-radio-button *ngFor="let role of newUserPossibleRoles" [value]="role.toLowerCase()">{{ role }}</mat-radio-button>
+      <mat-radio-button *ngFor="let role of newUserPossibleRoles" [value]="role.toLowerCase()">{{ role
+        }}</mat-radio-button>
     </mat-radio-group>
 
     <br>
@@ -36,18 +37,28 @@
   <h1>Create Receipt</h1>
 
   <form #receipt_form="ngForm" (submit)="createReceipt(receipt_form)">
-
-    <mat-checkbox *ngFor="let order of ordersToPay" [name]="order._id" ngModel>
-      <h3>ID: {{order._id}}</h3>
-      <h3>Table Number: {{ order.table_num }}</h3>
-      <h3>Dishes ordered:</h3>
-      <li *ngFor="let x of order.items">{{x}}</li>
-    </mat-checkbox>
+    <mat-radio-group name="table_num" *ngIf="tablesToPay" required ngModel >
+      <p>Select one of those tables:</p>
+      <mat-radio-button *ngFor="let table of tablesToPay" [value]="table">{{ table }}</mat-radio-button>
+    </mat-radio-group>
 
     <br>
 
     <button mat-raised-button color="primary" type="button" (click)="refreshOrders()">Refresh Orders</button>
-    <button mat-raised-button color="primary" type="submit">View Receipt</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="tablesToPay === undefined">View Receipt</button>
+
+    <div class="res-div" *ngIf="receiptTotal !== undefined">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title >Receipt for Table {{ receiptTotal.table_num }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>Dishes Ordered</p>
+          <li *ngFor="let i of receiptTotal.items">{{ i }}</li>
+          <p>Total: € {{receiptTotal.total_price}}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
     <div class="res-div" [hidden]="receiptMessage === undefined">
       {{ receiptMessage }}
@@ -56,31 +67,31 @@
 </div>
 
 
-  <h1>Orders Waiting to be Cooked</h1>
-  <button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
+<h1>Orders Waiting to be Cooked</h1>
+<button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
 
-  <div class="res-div" [hidden]="ordersPending === undefined">
-    {{ receiptMessage }}
-  </div>
-
-
-  <h1>View Table Status</h1>
-  <button mat-raised-button color="primary" type="button" (click)="getTables()">Refresh</button>
-
-  <div class="tables-div" [hidden]="currentTables === undefined">
-    <div *ngFor="let table of currentTables">{{ table }}</div>
-  </div>
+<div class="res-div" [hidden]="ordersPending === undefined">
+  {{ receiptMessage }}
+</div>
 
 
-  <h1>Get Average Processing Time</h1>
-  <button mat-raised-button color="primary" type="button" (click)="getAvgProcessingTime()">Refresh</button>
-  <div class="res-div" [hidden]="avgTimeMessage === undefined">
-    {{ avgTimeMessage }}
-  </div>
+<h1>View Table Status</h1>
+<button mat-raised-button color="primary" type="button" (click)="getTables()">Refresh</button>
+
+<div class="tables-div" [hidden]="currentTables === undefined">
+  <div *ngFor="let table of currentTables">{{ table }}</div>
+</div>
 
 
-  <h1>Get Daily Revenue</h1>
-  <button mat-raised-button color="primary" type="button" (click)="getDailyRevenue()">Refresh</button>
-  <div class="res-div" [hidden]="revenueMessage === undefined">
-    {{ revenueMessage }}
-  </div>
+<h1>Get Average Processing Time</h1>
+<button mat-raised-button color="primary" type="button" (click)="getAvgProcessingTime()">Refresh</button>
+<div class="res-div" [hidden]="avgTimeMessage === undefined">
+  {{ avgTimeMessage }}
+</div>
+
+
+<h1>Get Daily Revenue</h1>
+<button mat-raised-button color="primary" type="button" (click)="getDailyRevenue()">Refresh</button>
+<div class="res-div" [hidden]="revenueMessage === undefined">
+  {{ revenueMessage }}
+</div>

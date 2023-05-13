@@ -18,5 +18,5 @@ export const tableSchema = new Schema({
 
 export type tableType = InferSchemaType<typeof tableSchema>
 
-export const userModel = moongoose.model('Table', tableSchema)
+export const tableModel = moongoose.model('Table', tableSchema)
 
