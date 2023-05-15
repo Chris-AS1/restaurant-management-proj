@@ -3,7 +3,7 @@ import { tableModel, tableSchema } from "./table.schema";
 
 export const orderSchema = new Schema({
     table_num: {
-        type: Number, 
+        type: Number,
         ref: tableModel,
         required: true,
     },
@@ -15,8 +15,24 @@ export const orderSchema = new Schema({
         type: Date,
         required: true
     },
-    /* pending: Boolean,
-    completed: Boolean, */
+    // on queue to be cooked
+    pending: {
+        type: Boolean,
+        required: false,
+        default: true,
+    },
+    // has left the kitchen
+    completed: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+    // has been paid
+    paid: {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 })
 
 export type orderType = InferSchemaType<typeof orderSchema>

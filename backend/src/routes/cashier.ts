@@ -1,5 +1,5 @@
 import express from "express"
-import { addUser, getUser, getAllOrders, getReceipt } from "./../mongo"
+import { addUser, getUser, getReceipt, payReceipt, getUnpaidOrders } from "./../mongo"
 import { User } from "../models/user.model";
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { RegisterResponse } from "../models/responses/register.response.model";
@@ -29,7 +29,7 @@ router.post('/add_user', async function(req, res) {
     ).catch(
         err => {
             res.status(400)
-            res.send({ success: false, message: JSON.stringify(err) } as RegisterResponse)
+            res.send({ success: false, message: "Error creating user" } as RegisterResponse)
         }
     )
 });
@@ -42,13 +42,13 @@ router.get('/get_user/:usr', async function(req, res) {
         }).catch(
             err => {
                 res.status(403)
-                res.send({ success: false, message: JSON.stringify(err) } as NormalResponse)
+                res.send({ success: false, message: "Error retrieving users" } as NormalResponse)
             })
 });
 
-// All orders except ones already completed
+// All orders except ones already paid
 router.get('/get_orders', function(req, res) {
-    getAllOrders().then(
+    getUnpaidOrders().then(
         data => {
             res.status(200)
             // TODO consider convertin Date to timestamp
@@ -56,7 +56,7 @@ router.get('/get_orders', function(req, res) {
         }).catch(
             err => {
                 res.status(400)
-                res.send({ success: false, message: JSON.stringify(err) } as NormalResponse)
+                res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
             })
 });
 
@@ -69,9 +69,22 @@ router.get('/get_receipt/:table_id', function(req, res) {
         }).catch(
             err => {
                 res.status(400)
-                res.send({ success: false, message: JSON.stringify(err) } as NormalResponse)
+                res.send({ success: false, message: "Error creating a receipt" } as NormalResponse)
             })
 
+});
+
+router.get('/pay_receipt/:table_id', function(req, res) {
+    const table_id = parseInt(req.params.table_id)
+    payReceipt(table_id).then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as NormalResponse)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error paying a receipt" } as NormalResponse)
+            })
 });
 
 router.get('/get_waiters_tables', function(req, res) {

@@ -1,6 +1,11 @@
 import moongoose, { InferSchemaType, Schema } from "mongoose";
 
 export const tableSchema = new Schema({
+    table_num: {
+        type: Number,
+        unique: true,
+        required: true,
+    },
     waiter_id: {
         type: Number,
         required: true,

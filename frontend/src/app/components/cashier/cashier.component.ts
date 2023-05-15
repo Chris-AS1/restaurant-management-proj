@@ -69,6 +69,9 @@ export class CashierComponent {
 
   // Should get all orders but completed ones
   refreshOrders() {
+    this.receiptTotal = undefined
+    this.receiptMessage = undefined
+
     this.http.get<OrderList>(this.roleRoute + "/get_orders/").subscribe(
       (data) => {
         // TODO sort by table
@@ -77,8 +80,6 @@ export class CashierComponent {
           tables_to_pay.add(order.table_num)
         }
 
-        // old, used when displaying orders and not tables
-        // this.ordersToPay = data.message
         this.tablesToPay = Array.from(tables_to_pay)
       },
       (err) => {
@@ -87,10 +88,25 @@ export class CashierComponent {
   }
 
   createReceipt(form: NgForm) {
-    const table_id = form.value.table_num
+    const table_num = form.value.table_num
+    this.receiptTotal = undefined
+    this.receiptMessage = undefined
 
-    this.http.get<ReceiptResponse>(this.roleRoute + "/get_receipt/" + table_id).subscribe(
+    this.http.get<ReceiptResponse>(this.roleRoute + "/get_receipt/" + table_num).subscribe(
       (data) => { this.receiptTotal = data.message },
+      (err) => {
+        this.receiptMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
+  payReceipt(table_num: number) {
+    this.http.get<NormalResponse>(this.roleRoute + "/pay_receipt/" + table_num).subscribe(
+      (data) => {
+        this.refreshOrders()
+        this.receiptMessage = data.message
+        this.receiptTotal = undefined
+      },
       (err) => {
         this.receiptMessage = "Error: " + err.statusText
       }
@@ -108,6 +124,7 @@ export class CashierComponent {
       },
     )
   }
+
   getTableAssociations() {
     // TODO implement API endpoint first
     // consider moving it to getTables()
