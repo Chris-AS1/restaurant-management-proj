@@ -5,3 +5,13 @@
 .res-div {
   margin: 3px;
 }
+
+.order-card, .table-card{
+  max-width: 300px;
+}
+
+.order-div, .tables-div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

@@ -37,7 +37,7 @@
   <h1>Create Receipt</h1>
 
   <form #receipt_form="ngForm" (submit)="createReceipt(receipt_form)">
-    <mat-radio-group name="table_num" *ngIf="tablesToPay" required ngModel >
+    <mat-radio-group name="table_num" *ngIf="tablesToPay" required ngModel>
       <p>Select one of those tables:</p>
       <mat-radio-button *ngFor="let table of tablesToPay" [value]="table">{{ table }}</mat-radio-button>
     </mat-radio-group>
@@ -50,7 +50,7 @@
     <div class="res-div" *ngIf="receiptTotal !== undefined">
       <mat-card>
         <mat-card-header>
-          <mat-card-title >Receipt for Table {{ receiptTotal.table_num }}</mat-card-title>
+          <mat-card-title>Receipt for Table {{ receiptTotal.table_num }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <p>Dishes Ordered</p>
@@ -69,23 +69,51 @@
 </div>
 
 
-<h1>Orders Waiting to be Cooked</h1>
-<button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
+<div id="waiting_orders">
+  <h1>Orders yet to be cooked</h1>
+  <button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
+  <div class="order-div" *ngIf="ordersPending !== undefined">
+    <mat-card class="order-card" *ngFor="let order of ordersPending">
+      <mat-card-header>
+        <mat-card-title>Order for table {{ order.table_num }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Dishes Ordered</p>
+        <li *ngFor="let i of order.items">{{ i }}</li>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-<div class="res-div" [hidden]="ordersPending === undefined">
-  {{ receiptMessage }}
+  <div class="res-div" [hidden]="ordersPendingMessage === undefined">
+    {{ ordersPendingMessage }}
+  </div>
+</div>
+
+<div id="view_tables">
+  <h1>View Free Tables</h1>
+  <button mat-raised-button color="primary" type="button" (click)="getTables()">Refresh</button>
+
+  <div class="tables-div" *ngIf="tablesCurrent !== undefined">
+    <mat-card class="table-card" *ngFor="let table of tablesCurrent">
+      <mat-card-header>
+        <mat-card-title>Table {{ table.table_num }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Available Seats: {{ table.seats }}</p>
+        <p>Occupied Seats: {{ table.occupied_seats }}</p>
+        <p>Waiter ID: {{ table.waiter_id }}</p>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <div class="res-div" [hidden]="tablesMessage === undefined">
+    {{ tablesMessage }}
+  </div>
 </div>
 
 
-<h1>View Table Status</h1>
-<button mat-raised-button color="primary" type="button" (click)="getTables()">Refresh</button>
-
-<div class="tables-div" [hidden]="currentTables === undefined">
-  <div *ngFor="let table of currentTables">{{ table }}</div>
-</div>
-
-
-<h1>Get Average Processing Time</h1>
+<h1>Get Average Cooking Time</h1>
 <button mat-raised-button color="primary" type="button" (click)="getAvgProcessingTime()">Refresh</button>
 <div class="res-div" [hidden]="avgTimeMessage === undefined">
   {{ avgTimeMessage }}

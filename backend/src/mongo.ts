@@ -156,7 +156,7 @@ export const payReceipt = async (table_num: number) => {
     throw new Error("invalid table_num")
 }
 
-export const getWaitingOrders = async () => {
+export const getPendingOrders = async () => {
     const res = await orderModel.aggregate([
         {
             "$match": {
@@ -175,7 +175,7 @@ export const getWaitingOrders = async () => {
     return res as Order[]
 }
 
-export const getTableUsage = async () => {
+export const getTables = async () => {
     // TODO double check
     const res = await tableModel.aggregate([
         {
@@ -245,6 +245,6 @@ export const getDailyRevenue = async () => {
                 as: "items_info"
             }
         }]).exec()
-    pino.info(res)
 
+    pino.info(res)
 }

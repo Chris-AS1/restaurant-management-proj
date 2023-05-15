@@ -32,10 +32,13 @@ export class CashierComponent {
   avgTimeMessage?: string
   revenueMessage?: string
 
-  ordersToPay?: Order[]
   tablesToPay?: number[]
+
   ordersPending?: Order[]
-  currentTables?: Table[]
+  ordersPendingMessage? :string
+
+  tablesCurrent?: Table[]
+  tablesMessage?: string
 
   constructor(private http: HttpClient) { }
 
@@ -113,31 +116,30 @@ export class CashierComponent {
     )
   }
 
-  // Should get orders waiting to be cooked
+  // Get orders waiting to be cooked, WAITING queue
   refreshPendingOrders() {
-    // TODO endpoint
     this.http.get<OrderList>(this.roleRoute + "/get_pending/").subscribe(
       (data) => {
-        if (data.success && data.message.length > 0) {
+        if (data.success) {
           this.ordersPending = data.message
         }
       },
     )
   }
 
-  getTableAssociations() {
-    // TODO implement API endpoint first
-    // consider moving it to getTables()
-  }
-
   getTables() {
-    // TODO endpoint
+    this.tablesMessage = undefined
+    this.tablesCurrent = undefined
+
     this.http.get<TableList>(this.roleRoute + "/get_tables/").subscribe(
       (data) => {
-        if (data.success && data.message.length > 0) {
-          this.currentTables = data.message
+        if (data.success) {
+          this.tablesCurrent = data.message
         }
       },
+      (err) => {
+        this.tablesMessage = "Error: " + err.statusText
+      }
     )
   }
 

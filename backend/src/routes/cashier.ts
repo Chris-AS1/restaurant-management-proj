@@ -1,10 +1,11 @@
 import express from "express"
-import { addUser, getUser, getReceipt, payReceipt, getUnpaidOrders } from "./../mongo"
+import { addUser, getUser, getReceipt, payReceipt, getUnpaidOrders, getPendingOrders, getTables } from "./../mongo"
 import { User } from "../models/user.model";
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { RegisterResponse } from "../models/responses/register.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
 import { ReceiptResponse } from "../models/responses/receipt.response";
+import { TableList } from "../models/responses/tablelist.response.model"
 
 var router = express.Router();
 
@@ -51,7 +52,6 @@ router.get('/get_orders', function(req, res) {
     getUnpaidOrders().then(
         data => {
             res.status(200)
-            // TODO consider convertin Date to timestamp
             res.send({ success: true, message: data } as OrderList)
         }).catch(
             err => {
@@ -87,12 +87,30 @@ router.get('/pay_receipt/:table_id', function(req, res) {
             })
 });
 
-router.get('/get_waiters_tables', function(req, res) {
-    res.send('');
+// All orders except ones already paid
+router.get('/get_pending', function(req, res) {
+    getPendingOrders().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as OrderList)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
+            })
 });
 
-router.get('/get_free_tables', function(req, res) {
-    res.send('');
+
+router.get('/get_tables', function(req, res) {
+    getTables().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as TableList)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error retrieving tables" } as NormalResponse)
+            })
 });
 
 router.get('/get_avg_proc_time', function(req, res) {

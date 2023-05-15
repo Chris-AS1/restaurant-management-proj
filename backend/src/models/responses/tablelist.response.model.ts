@@ -1,4 +1,4 @@
-import { Table } from "./table.model"
+import { Table } from "../table.model";
 
 export interface TableList {
   success: boolean,
