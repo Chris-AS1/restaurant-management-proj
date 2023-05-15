@@ -6,7 +6,7 @@ import { orderModel } from './schemas/order.schema';
 import { foodTypeModel } from './schemas/foodtype.schema';
 import { Order } from './models/order.model';
 import { Receipt } from './models/receipt.model';
-import { NormalResponse } from './models/responses/normal.response.model';
+import { Table } from "./models/table.model"
 import { tableModel } from './schemas/table.schema';
 
 const pino = require('pino')()
@@ -156,5 +156,95 @@ export const payReceipt = async (table_num: number) => {
     throw new Error("invalid table_num")
 }
 
+export const getWaitingOrders = async () => {
+    const res = await orderModel.aggregate([
+        {
+            "$match": {
+                pending: true
+            },
+        },
+        {
+            "$lookup": {
+                from: "foodtypes",
+                localField: "items",
+                foreignField: "name",
+                as: "items_info"
+            }
+        }]).exec()
 
+    return res as Order[]
+}
 
+export const getTableUsage = async () => {
+    // TODO double check
+    const res = await tableModel.aggregate([
+        {
+            "$lookup": {
+                from: "users",
+                localField: "waiter_id",
+                foreignField: "_id",
+                as: "waiter_info"
+            }
+        }
+    ])
+    pino.info("tables + waiters: ")
+    pino.info(res)
+    return res as Table[]
+}
+
+export const getAvgProcTime = async () => {
+    // fetches the PROCESSING queue
+    const res = await orderModel.aggregate([
+        {
+            "$match": {
+                pending: false,
+                completed: false,
+            },
+        },
+        {
+            "$lookup": {
+                from: "foodtypes",
+                localField: "items",
+                foreignField: "name",
+                as: "items_info"
+            }
+        }]).exec()
+
+    let tot_proc_time = 0
+
+    for (let r of res) {
+        for (let food of r.items_info) {
+            tot_proc_time += food.prod_time
+        }
+    }
+
+    // mean by order number
+    return tot_proc_time / res.length
+}
+
+// TODO test
+export const getDailyRevenue = async () => {
+    var start = new Date();
+    start.setHours(0, 0, 0, 0);
+
+    var end = new Date();
+    end.setHours(23, 59, 59, 999);
+
+    const res = await orderModel.aggregate([
+        {
+            "$match": {
+                paid: true,
+                order_time: { $gte: start, $lt: end }
+            },
+        },
+        {
+            "$lookup": {
+                from: "foodtypes",
+                localField: "items",
+                foreignField: "name",
+                as: "items_info"
+            }
+        }]).exec()
+    pino.info(res)
+
+}
