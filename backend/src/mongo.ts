@@ -8,7 +8,6 @@ import { Order } from './models/order.model';
 import { Receipt } from './models/receipt.model';
 import { Table } from "./models/table.model"
 import { tableModel } from './schemas/table.schema';
-import { argv0 } from 'process';
 
 const pino = require('pino')()
 
