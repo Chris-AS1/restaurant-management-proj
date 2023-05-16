@@ -160,7 +160,7 @@ export class CashierComponent {
     this.http.get<NormalResponse>(this.roleRoute + "/get_avg_time/").subscribe(
       (data) => {
         if (data.success) {
-          this.avgTimeMessage = data.message
+          this.avgTimeMessage = "The average cooking time in the kitchen is: " + data.message + " minutes"
         } else {
           this.avgTimeMessage = "Error"
         }
@@ -175,7 +175,7 @@ export class CashierComponent {
     this.http.get<NormalResponse>(this.roleRoute + "/get_daily_revenue/").subscribe(
       (data) => {
         if (data.success) {
-          this.revenueMessage = data.message
+          this.revenueMessage = "Today €" + data.message + " were made in revenue"
         } else {
           this.revenueMessage = "Error"
         }
