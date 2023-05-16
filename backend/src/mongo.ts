@@ -8,6 +8,7 @@ import { Order } from './models/order.model';
 import { Receipt } from './models/receipt.model';
 import { Table } from "./models/table.model"
 import { tableModel } from './schemas/table.schema';
+import { argv0 } from 'process';
 
 const pino = require('pino')()
 
@@ -15,7 +16,7 @@ mongoose
     .connect(environment.MONGO_URL, { retryWrites: true, w: 'majority' })
     .then(() => {
         pino.info("Connected to MongoDB");
-        // Promise.resolve(insertDefaultValues()).catch(e => { pino.error(e) })
+        Promise.resolve(insertDefaultValues()).catch(e => { pino.error(e) })
     })
     .catch((error) => pino.error(error));
 
@@ -210,10 +211,14 @@ export const getAvgProcTime = async () => {
             }
         }]).exec()
 
+    if (res.length === 0) {
+        return 0
+    }
+
     let tot_proc_time = 0
 
-    for (let r of res) {
-        for (let food of r.items_info) {
+    for (let order of res) {
+        for (let food of order.items_info) {
             tot_proc_time += food.prod_time
         }
     }
@@ -222,14 +227,15 @@ export const getAvgProcTime = async () => {
     return tot_proc_time / res.length
 }
 
-// TODO test
 export const getDailyRevenue = async () => {
-    var start = new Date();
-    start.setHours(0, 0, 0, 0);
+    let day_profit = 0
 
+    var start = new Date();
     var end = new Date();
+    start.setHours(0, 0, 0, 0);
     end.setHours(23, 59, 59, 999);
 
+    // fetches paid orders made today
     const res = await orderModel.aggregate([
         {
             "$match": {
@@ -246,5 +252,11 @@ export const getDailyRevenue = async () => {
             }
         }]).exec()
 
-    pino.info(res)
+    for (let order of res) {
+        for (let food of order.items_info) {
+            day_profit += food.price
+        }
+    }
+
+    return day_profit
 }

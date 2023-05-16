@@ -1,5 +1,5 @@
 import express from "express"
-import { addUser, getUser, getReceipt, payReceipt, getUnpaidOrders, getPendingOrders, getTables } from "./../mongo"
+import { addUser, getUser, getReceipt, payReceipt, getUnpaidOrders, getPendingOrders, getTables, getAvgProcTime, getDailyRevenue } from "./../mongo"
 import { User } from "../models/user.model";
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { RegisterResponse } from "../models/responses/register.response.model";
@@ -113,12 +113,29 @@ router.get('/get_tables', function(req, res) {
             })
 });
 
-router.get('/get_avg_proc_time', function(req, res) {
-    res.send('');
+router.get('/get_avg_time', function(req, res) {
+    getAvgProcTime().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: Math.floor(data).toString() } as NormalResponse)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error retrieving mean time" } as NormalResponse)
+            })
 });
 
 router.get('/get_daily_revenue', function(req, res) {
-    res.send('');
+    // TODO finish implementation
+    getDailyRevenue().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: Math.floor(data).toString() } as NormalResponse)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error retrieving mean time" } as NormalResponse)
+            })
 });
 
 module.exports = router;

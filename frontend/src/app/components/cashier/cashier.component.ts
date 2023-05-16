@@ -35,7 +35,7 @@ export class CashierComponent {
   tablesToPay?: number[]
 
   ordersPending?: Order[]
-  ordersPendingMessage? :string
+  ordersPendingMessage?: string
 
   tablesCurrent?: Table[]
   tablesMessage?: string
@@ -96,7 +96,13 @@ export class CashierComponent {
     this.receiptMessage = undefined
 
     this.http.get<ReceiptResponse>(this.roleRoute + "/get_receipt/" + table_num).subscribe(
-      (data) => { this.receiptTotal = data.message },
+      (data) => {
+        if (data.success) {
+          this.receiptTotal = data.message
+        } else {
+          this.receiptMessage = "Error"
+        }
+      },
       (err) => {
         this.receiptMessage = "Error: " + err.statusText
       }
@@ -122,8 +128,13 @@ export class CashierComponent {
       (data) => {
         if (data.success) {
           this.ordersPending = data.message
+        } else {
+          this.ordersPendingMessage = "Error"
         }
       },
+      (err) => {
+        this.ordersPendingMessage = "Error: " + err.statusText
+      }
     )
   }
 
@@ -135,6 +146,8 @@ export class CashierComponent {
       (data) => {
         if (data.success) {
           this.tablesCurrent = data.message
+        } else {
+          this.tablesMessage = "Error"
         }
       },
       (err) => {
@@ -144,24 +157,32 @@ export class CashierComponent {
   }
 
   getAvgProcessingTime() {
-    // TODO endpoint
     this.http.get<NormalResponse>(this.roleRoute + "/get_avg_time/").subscribe(
       (data) => {
         if (data.success) {
           this.avgTimeMessage = data.message
+        } else {
+          this.avgTimeMessage = "Error"
         }
       },
+      (err) => {
+        this.avgTimeMessage = "Error: " + err.statusText
+      }
     )
   }
 
   getDailyRevenue() {
-    // TODO endpoint
     this.http.get<NormalResponse>(this.roleRoute + "/get_daily_revenue/").subscribe(
       (data) => {
         if (data.success) {
           this.revenueMessage = data.message
+        } else {
+          this.revenueMessage = "Error"
         }
       },
+      (err) => {
+        this.revenueMessage = "Error: " + err.statusText
+      }
     )
   }
 }
