@@ -2,3 +2,20 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.order-card, .table-card{
+  max-width: 300px;
+}
+
+.order-div, .tables-div {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.res-div {
+  margin: 3px;
+}
+
+

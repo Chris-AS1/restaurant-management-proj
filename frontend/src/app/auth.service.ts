@@ -9,10 +9,11 @@ import { environment } from 'environment';
   providedIn: 'root'
 })
 export class AuthService {
-
   private loggedStatus: boolean = true;
   private loggedUsername: string | undefined;
-  private loggedRole: Roles | undefined = Roles.CASHIER;
+
+  // TO REMOVE TESTING ONLY
+  private loggedRole: Roles | undefined = Roles.COOK;
 
   constructor(private http: HttpClient) { }
 

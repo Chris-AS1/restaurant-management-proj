@@ -23,7 +23,7 @@ app.post('/login', (req, res) => {
     pino.info(req.body)
     const dummy_res: LoginResponse = {
         success: true,
-        role: 1
+        role: 2
     }
     // TODO encrypt password, verify password
     res.send(dummy_res)
@@ -36,3 +36,6 @@ app.listen(port, () => {
 // import routes
 var cashier = require('./routes/cashier')
 app.use('/cashier', cashier)
+
+var cook = require('./routes/cook')
+app.use('/cook', cook)

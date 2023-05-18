@@ -69,7 +69,7 @@
 </div>
 
 
-<div id="waiting_orders">
+<!-- <div id="waiting_orders">
   <h1>Orders yet to be cooked</h1>
   <button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
   <div class="order-div" *ngIf="ordersPending !== undefined">
@@ -87,7 +87,9 @@
   <div class="res-div" [hidden]="ordersPendingMessage === undefined">
     {{ ordersPendingMessage }}
   </div>
-</div>
+</div> -->
+
+<app-uncooked></app-uncooked>
 
 <div id="view_tables">
   <h1>View Free Tables</h1>

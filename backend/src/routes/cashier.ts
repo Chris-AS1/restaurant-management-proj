@@ -9,10 +9,6 @@ import { TableList } from "../models/responses/tablelist.response.model"
 
 var router = express.Router();
 
-router.get('/dashboard', function(req, res) {
-    res.send('Cashier Dashboard');
-});
-
 router.post('/add_user', async function(req, res) {
     const { username, password, role }: User = req.body.user
     const u: User = {

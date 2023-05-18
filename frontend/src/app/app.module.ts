@@ -11,7 +11,8 @@ import { WaiterComponent } from './components/waiter/waiter.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule} from "./material/material.module"
+import { MaterialModule} from "./material/material.module";
+import { UncookedComponent } from './components/shared/uncooked/uncooked.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MaterialModule} from "./material/material.module"
     HomeComponent,
     CookComponent,
     BartenderComponent,
-    WaiterComponent
+    WaiterComponent,
+    UncookedComponent,
   ],
   imports: [
     BrowserModule,

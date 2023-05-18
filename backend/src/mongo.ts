@@ -19,11 +19,6 @@ mongoose
     })
     .catch((error) => pino.error(error));
 
-export const addUser = async (u: User) => {
-    const newUser = new userModel(u)
-    return newUser.save()
-}
-
 const insertDefaultValues = async () => {
     const CopertoType = new foodTypeModel({
         name: "Coperto",
@@ -79,27 +74,13 @@ const insertDefaultValues = async () => {
         .catch(e => pino.error(e))
 }
 
-export const getUser = async (username: string) => {
-    return await userModel.find({ username: username }).exec()
+export const addUser = async (u: User) => {
+    const newUser = new userModel(u)
+    return newUser.save()
 }
 
-export const getUnpaidOrders = async () => {
-    const res = await orderModel.aggregate([
-        {
-            "$match": {
-                paid: false,
-            },
-        },
-        {
-            "$lookup": {
-                from: "foodtypes",
-                localField: "items",
-                foreignField: "name",
-                as: "items_info"
-            }
-        }]).exec()
-
-    return res as Order[]
+export const getUser = async (username: string) => {
+    return await userModel.find({ username: username }).exec()
 }
 
 // Has to calculate total price, has to aggregate orders and set table to free
@@ -156,11 +137,31 @@ export const payReceipt = async (table_num: number) => {
     throw new Error("invalid table_num")
 }
 
-export const getPendingOrders = async () => {
+export const getUnpaidOrders = async () => {
     const res = await orderModel.aggregate([
         {
             "$match": {
-                pending: true
+                paid: false,
+            },
+        },
+        {
+            "$lookup": {
+                from: "foodtypes",
+                localField: "items",
+                foreignField: "name",
+                as: "items_info"
+            }
+        }]).exec()
+
+    return res as Order[]
+}
+export const getPendingOrders = async () => {
+    // query for WAITING queue
+    const res = await orderModel.aggregate([
+        {
+            "$match": {
+                pending: true,
+                completed: false // TODO check if necessary
             },
         },
         {
@@ -175,6 +176,67 @@ export const getPendingOrders = async () => {
     return res as Order[]
 }
 
+export const getCookingOrders = async () => {
+    const res = await orderModel.aggregate([
+        {
+            "$match": {
+                pending: false,
+                completed: false
+            },
+        },
+        {
+            "$lookup": {
+                from: "foodtypes",
+                localField: "items",
+                foreignField: "name",
+                as: "items_info"
+            }
+        }]).exec()
+
+    return res as Order[]
+}
+
+// TODO check if working
+export const startCooking = async (table_num: number) => {
+    const table = await tableModel.find({ table_num: table_num }).exec()
+    if (table) {
+        // fetches the WAITING queue
+        await orderModel.updateMany({
+            table_num: table_num,
+            pending: true, 
+            completed: false // TODO check if necessary
+        }, {
+            $set: {
+                pending: false,
+            }
+        }).exec()
+
+        return "Orders assigned to table " + table_num + " are being cooked"
+    }
+
+    throw new Error("invalid table_num")
+}
+
+// TODO check if working
+export const finishCooking = async (table_num: number) => {
+    const table = await tableModel.find({ table_num: table_num }).exec()
+    if (table) {
+        // fetches the COOKING queue
+        await orderModel.updateMany({
+            table_num: table_num,
+            pending: false, 
+            completed: false // TODO check if necessary
+        }, {
+            $set: {
+                completed: true,
+            }
+        }).exec()
+
+        return "Orders assigned to table " + table_num + " are being cooked"
+    }
+
+    throw new Error("invalid table_num")
+}
 export const getTables = async () => {
     // TODO double check
     const res = await tableModel.aggregate([
@@ -187,8 +249,7 @@ export const getTables = async () => {
             }
         }
     ])
-    pino.info("tables + waiters: ")
-    pino.info(res)
+
     return res as Table[]
 }
 
@@ -198,7 +259,7 @@ export const getAvgProcTime = async () => {
         {
             "$match": {
                 pending: false,
-                completed: false,
+                completed: true,
             },
         },
         {
@@ -259,3 +320,4 @@ export const getDailyRevenue = async () => {
 
     return day_profit
 }
+

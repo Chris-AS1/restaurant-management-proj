@@ -49,6 +49,8 @@ export class CashierComponent {
       roleN = parseInt(Roles[form.value.role.toUpperCase()])
     }
 
+    this.registerMessage = undefined
+
     const u: User = {
       username: form.value.username,
       password: form.value.password,
