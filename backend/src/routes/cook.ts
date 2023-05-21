@@ -1,13 +1,13 @@
 import express from "express"
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
-import { getUnpaidOrders, getPendingOrders, startCooking, getCookingOrders, finishCooking } from "./../mongo"
+import { startCooking, getCookingOrders, finishCooking, getWaitingOrders } from "../db/cook"
 
 var router = express.Router();
 
-// All orders except ones already paid
-router.get('/get_orders', function(req, res) {
-    getUnpaidOrders().then(
+// Orders in the WAITING queue
+router.get('/get_waiting', function(req, res) {
+    getWaitingOrders().then(
         data => {
             res.status(200)
             res.send({ success: true, message: data } as OrderList)
@@ -18,20 +18,21 @@ router.get('/get_orders', function(req, res) {
             })
 });
 
-// All orders except ones already paid
-router.get('/get_pending', function(req, res) {
-    getPendingOrders().then(
+// Get orders that are being cooked
+router.get('/get_cooking', function(req, res) {
+    getCookingOrders().then(
         data => {
             res.status(200)
             res.send({ success: true, message: data } as OrderList)
         }).catch(
-            err => {
-                res.status(400)
-                res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
-            })
+        err => {
+            res.status(400)
+            res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
+        })
 });
 
-router.get('/cook_order/:table_id', function(req, res) {
+// Start cooking orders for a table
+router.get('/begin_order/:table_id', function(req, res) {
     const table_id = parseInt(req.params.table_id)
     startCooking(table_id).then(
         data => {
@@ -39,11 +40,13 @@ router.get('/cook_order/:table_id', function(req, res) {
             res.send({ success: true, message: data } as NormalResponse)
         }).catch(
             err => {
+                console.log(err)
                 res.status(400)
-                res.send({ success: false, message: "Error paying a receipt" } as NormalResponse)
+                res.send({ success: false, message: "Error starting cooking" } as NormalResponse)
             })
 });
 
+// Finish cooking orders for a table
 router.get('/finish_order/:table_id', function(req, res) {
     const table_id = parseInt(req.params.table_id)
     finishCooking(table_id).then(
@@ -54,19 +57,6 @@ router.get('/finish_order/:table_id', function(req, res) {
             err => {
                 res.status(400)
                 res.send({ success: false, message: "Error finishing the order" } as NormalResponse)
-            })
-});
-
-// All orders except ones already paid
-router.get('/get_cooking', function(req, res) {
-    getCookingOrders().then(
-        data => {
-            res.status(200)
-            res.send({ success: true, message: data } as OrderList)
-        }).catch(
-            err => {
-                res.status(400)
-                res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
             })
 });
 

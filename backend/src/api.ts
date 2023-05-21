@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import express from 'express'
 import { LoginResponse } from './models/responses/login.response.model';
+
+const _ = require('./mongo')
 const cors = require('cors');
 
 const pino = require('pino')()

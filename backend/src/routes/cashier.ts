@@ -1,11 +1,11 @@
 import express from "express"
-import { addUser, getUser, getReceipt, payReceipt, getUnpaidOrders, getPendingOrders, getTables, getAvgProcTime, getDailyRevenue } from "./../mongo"
 import { User } from "../models/user.model";
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { RegisterResponse } from "../models/responses/register.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
 import { ReceiptResponse } from "../models/responses/receipt.response";
 import { TableList } from "../models/responses/tablelist.response.model"
+import { addUser, getUser, getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue } from "../db/cashier"
 
 var router = express.Router();
 
@@ -44,7 +44,7 @@ router.get('/get_user/:usr', async function(req, res) {
 });
 
 // All orders except ones already paid
-router.get('/get_orders', function(req, res) {
+router.get('/get_unpaid', function(req, res) {
     getUnpaidOrders().then(
         data => {
             res.status(200)
@@ -83,9 +83,9 @@ router.get('/pay_receipt/:table_id', function(req, res) {
             })
 });
 
-// All orders except ones already paid
-router.get('/get_pending', function(req, res) {
-    getPendingOrders().then(
+// Orders in the WAITING queue
+router.get('/get_waiting', function(req, res) {
+    getWaitingOrders().then(
         data => {
             res.status(200)
             res.send({ success: true, message: data } as OrderList)

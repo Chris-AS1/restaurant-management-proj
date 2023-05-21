@@ -53,8 +53,10 @@
           <mat-card-title>Receipt for Table {{ receiptTotal.table_num }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>Dishes Ordered</p>
-          <li *ngFor="let i of receiptTotal.items">{{ i }}</li>
+          <p>Dishes Ordered:</p>
+          <ul>
+            <li *ngFor="let i of receiptTotal.items">{{ i }}</li>
+          </ul>
           <p>Total: € {{receiptTotal.total_price}}</p>
         </mat-card-content>
       </mat-card>
@@ -67,27 +69,6 @@
     </div>
   </form>
 </div>
-
-
-<!-- <div id="waiting_orders">
-  <h1>Orders yet to be cooked</h1>
-  <button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button>
-  <div class="order-div" *ngIf="ordersPending !== undefined">
-    <mat-card class="order-card" *ngFor="let order of ordersPending">
-      <mat-card-header>
-        <mat-card-title>Order for table {{ order.table_num }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>Dishes Ordered</p>
-        <li *ngFor="let i of order.items">{{ i }}</li>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <div class="res-div" [hidden]="ordersPendingMessage === undefined">
-    {{ ordersPendingMessage }}
-  </div>
-</div> -->
 
 <app-uncooked></app-uncooked>
 

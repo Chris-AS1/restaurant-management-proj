@@ -77,7 +77,7 @@ export class CashierComponent {
     this.receiptTotal = undefined
     this.receiptMessage = undefined
 
-    this.http.get<OrderList>(this.roleRoute + "/get_orders/").subscribe(
+    this.http.get<OrderList>(this.roleRoute + "/get_unpaid/").subscribe(
       (data) => {
         // TODO sort by table
         const tables_to_pay = new Set<number>()
@@ -126,7 +126,7 @@ export class CashierComponent {
 
   // Get orders waiting to be cooked, WAITING queue
   refreshPendingOrders() {
-    this.http.get<OrderList>(this.roleRoute + "/get_pending/").subscribe(
+    this.http.get<OrderList>(this.roleRoute + "/get_waiting/").subscribe(
       (data) => {
         if (data.success) {
           this.ordersPending = data.message
