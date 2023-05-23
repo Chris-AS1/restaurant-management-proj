@@ -21,7 +21,7 @@ export class CookComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.intervalRefresh = setInterval(() => this.refreshCookingOrders(), 1000)
+    this.intervalRefresh = setInterval(() => this.refreshCookingOrders(), environment.REFRESH_INTERVAL)
   }
 
   ngOnDestroy() {

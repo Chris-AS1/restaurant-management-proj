@@ -13,9 +13,11 @@ import { aggregateOrdersByTable } from '../tools/tools';
 })
 export class UncookedComponent {
   @Input() isCook: boolean = false
+  @Input() isBart: boolean = false
+
   intervalRefresh?: any
 
-  roleRoute = environment.ROOT_URL + "/cook"
+  roleRoute?: string
 
   ordersPending?: Order[]
   ordersPendingMessage?: string
@@ -23,7 +25,8 @@ export class UncookedComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.intervalRefresh = setInterval(() => this.refreshPendingOrders(), 1000)
+    this.roleRoute = environment.ROOT_URL + (this.isCook ? "/cook" : this.isBart ? "/bartender" : "")
+    this.intervalRefresh = setInterval(() => this.refreshPendingOrders(), environment.REFRESH_INTERVAL)
   }
 
   ngOnDestroy() {
@@ -37,7 +40,7 @@ export class UncookedComponent {
     this.http.get<OrderList>(this.roleRoute + "/get_waiting/").subscribe(
       (data) => {
         if (data.success) {
-          if (this.isCook) {
+          if (this.isCook || this.isBart) {
             const agg_orders = aggregateOrdersByTable(data.message)
             this.ordersPending = Object.values(agg_orders)
           } else {
@@ -54,7 +57,22 @@ export class UncookedComponent {
     )
   }
 
+  // Cook only, start order
   cookOrder(table_num: number) {
+    this.http.get<NormalResponse>(this.roleRoute + "/begin_order/" + table_num).subscribe(
+      (data) => {
+        this.ordersPendingMessage = data.message;
+        this.refreshPendingOrders()
+      },
+      (err) => {
+        this.ordersPendingMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
+  // TODO test
+  // Bartender only, start order
+  processOrder(table_num: number) {
     this.http.get<NormalResponse>(this.roleRoute + "/begin_order/" + table_num).subscribe(
       (data) => {
         this.ordersPendingMessage = data.message;

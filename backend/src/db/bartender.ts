@@ -11,7 +11,7 @@ export const getWaitingOrders = async () => {
             "$match": {
                 items_info: {
                     $elemMatch: {
-                        drink: false // cook route. shouldn't see drink orders
+                        drink: true 
                     }
                 }
             }
@@ -21,7 +21,7 @@ export const getWaitingOrders = async () => {
     return res as Order[]
 }
 
-export const getCookingOrders = async () => {
+export const getProcessingOrders = async () => {
     // PROCESSING queue
     const res = await orderModel.aggregate([
         ...processingQueueParams,
@@ -29,7 +29,7 @@ export const getCookingOrders = async () => {
             "$match": {
                 items_info: {
                     $elemMatch: {
-                        drink: false // cook route. shouldn't see drink orders
+                        drink: true
                     }
                 }
             }
@@ -39,7 +39,7 @@ export const getCookingOrders = async () => {
     return res as Order[]
 }
 
-export const startCooking = async (table_num: number) => {
+export const startProcessing = async (table_num: number) => {
     const table = await tableModel.find({ table_num: table_num }).exec()
     if (table) {
         // WAITING queue
@@ -49,7 +49,7 @@ export const startCooking = async (table_num: number) => {
                 "$match": {
                     items_info: {
                         $elemMatch: {
-                            drink: false
+                            drink: true
                         }
                     }
                 }
@@ -66,7 +66,7 @@ export const startCooking = async (table_num: number) => {
     throw new Error("invalid table_num")
 }
 
-export const finishCooking = async (table_num: number) => {
+export const finishProcessing = async (table_num: number) => {
     const table = await tableModel.find({ table_num: table_num }).exec()
     if (table) {
         // PROCESSING queue
@@ -76,7 +76,7 @@ export const finishCooking = async (table_num: number) => {
                 "$match": {
                     items_info: {
                         $elemMatch: {
-                            drink: false
+                            drink: true
                         }
                     }
                 }
@@ -92,3 +92,4 @@ export const finishCooking = async (table_num: number) => {
 
     throw new Error("invalid table_num")
 }
+

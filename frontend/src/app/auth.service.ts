@@ -13,7 +13,7 @@ export class AuthService {
   private loggedUsername: string | undefined;
 
   // TO REMOVE TESTING ONLY
-  private loggedRole: Roles | undefined = Roles.COOK;
+  private loggedRole: Roles | undefined = Roles.BARTENDER;
 
   constructor(private http: HttpClient) { }
 

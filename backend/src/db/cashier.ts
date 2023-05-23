@@ -5,6 +5,7 @@ import { Order } from "../models/order.model";
 import { Receipt } from "../models/receipt.model";
 import { Table } from "../models/table.model";
 import { tableModel } from "../schemas/table.schema";
+import { processingQueueParams, waitingQueueParams } from "./params";
 
 const pino = require('pino')()
 
@@ -95,20 +96,8 @@ export const getUnpaidOrders = async () => {
 export const getWaitingOrders = async () => {
     // WAITING queue
     const res = await orderModel.aggregate([
-        {
-            "$match": {
-                pending: true,
-                completed: false
-            },
-        },
-        {
-            "$lookup": {
-                from: "foodtypes",
-                localField: "items",
-                foreignField: "name",
-                as: "items_info"
-            }
-        }]).exec()
+        ...waitingQueueParams,
+    ]).exec()
 
     return res as Order[]
 }
@@ -126,26 +115,17 @@ export const getTables = async () => {
         }
     ])
 
+    pino.err("tables:")
+    pino.warn(res)
+
     return res as Table[]
 }
 
 export const getAvgProcTime = async () => {
-    // fetches the PROCESSING queue
+    // PROCESSING queue
     const res = await orderModel.aggregate([
-        {
-            "$match": {
-                pending: false,
-                completed: true,
-            },
-        },
-        {
-            "$lookup": {
-                from: "foodtypes",
-                localField: "items",
-                foreignField: "name",
-                as: "items_info"
-            }
-        }]).exec()
+        ...processingQueueParams,
+    ]).exec()
 
     if (res.length === 0) {
         return 0

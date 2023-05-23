@@ -1,1 +1,38 @@
-<p>bartender works!</p>
+<h1>Bartender Dashboard</h1>
+
+<app-uncooked [isBart]=true></app-uncooked>
+
+<div id="cooking_orders">
+  <h1>PROCESSING Orders</h1>
+
+  <br>
+
+  <div class="res-div" *ngIf="ordersProcessingMessage !== undefined">
+    {{ ordersProcessingMessage }}
+  </div>
+  <div *ngIf="ordersProcessing !== undefined && ordersProcessing.length === 0">
+    There are no orders being processed
+  </div>
+
+  <br>
+
+  <div class="order-div" *ngIf="ordersProcessing !== undefined">
+    <mat-card class="order-card" *ngFor="let order of ordersProcessing">
+      <mat-card-header>
+        <mat-card-title>Table {{ order.table_num }} order</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Ordered at: {{ order.order_time | date:'shortTime'}} </p>
+        <p>Dishes Ordered:</p>
+        <ul>
+          <li *ngFor="let i of order.items">{{ i }}</li>
+        </ul>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button color="primary" (click)="finishOrder(order.table_num)" mat-raised-button>FINISH</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>

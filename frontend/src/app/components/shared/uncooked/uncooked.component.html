@@ -29,6 +29,10 @@
       <mat-card-actions *ngIf="isCook === true">
         <button color="primary" (click)="cookOrder(order.table_num)" mat-raised-button>COOK</button>
       </mat-card-actions>
+
+      <mat-card-actions *ngIf="isBart === true">
+        <button color="primary" (click)="processOrder(order.table_num)" mat-raised-button>Prep</button>
+      </mat-card-actions>
     </mat-card>
   </div>
 

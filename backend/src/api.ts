@@ -41,3 +41,6 @@ app.use('/cashier', cashier)
 
 var cook = require('./routes/cook')
 app.use('/cook', cook)
+
+var bartender = require('./routes/bartender')
+app.use('/bartender', bartender)
