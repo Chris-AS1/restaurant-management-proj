@@ -1,39 +1,10 @@
 <div id="waiting_orders">
   <h1>WAITING Orders</h1>
-  <!-- <button mat-raised-button color="primary" type="button" (click)="refreshPendingOrders()">Refresh</button> -->
 
   <br>
 
-  <div class="res-div" *ngIf="ordersPendingMessage !== undefined">
-    {{ ordersPendingMessage }}
-  </div>
-  <div *ngIf="ordersPending === undefined || ordersPending.length === 0">
-    There are no pending orders
-  </div>
+  <app-orderarray *ngIf="isCook === true" iconName="local_pizza" (buttonFunction)="cookOrder($event)" buttonText="Cook" [ordersProcessing]="ordersPending"></app-orderarray>
 
-  <br>
-
-  <div class="order-div" *ngIf="ordersPending !== undefined">
-    <mat-card class="order-card" *ngFor="let order of ordersPending">
-      <mat-card-header>
-        <mat-card-title>Table {{ order.table_num }} order</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>Ordered at: {{ order.order_time | date:'shortTime'}} </p>
-        <p>Dishes Ordered:</p>
-        <ul>
-          <li *ngFor="let i of order.items">{{ i }}</li>
-        </ul>
-      </mat-card-content>
-
-      <mat-card-actions *ngIf="isCook === true">
-        <button color="primary" (click)="cookOrder(order.table_num)" mat-raised-button>COOK</button>
-      </mat-card-actions>
-
-      <mat-card-actions *ngIf="isBart === true">
-        <button color="primary" (click)="processOrder(order.table_num)" mat-raised-button>Prep</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+  <app-orderarray *ngIf="isBart === true" iconName="wine_bar" (buttonFunction)="processOrder($event)" buttonText="Prepare" [ordersProcessing]="ordersPending"></app-orderarray>
 
 </div>

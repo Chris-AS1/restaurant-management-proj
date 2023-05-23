@@ -11,6 +11,8 @@ import { aggregateOrdersByTable } from '../tools/tools';
   templateUrl: './uncooked.component.html',
   styleUrls: ['./uncooked.component.scss']
 })
+
+// TODO generalize this component
 export class UncookedComponent {
   @Input() isCook: boolean = false
   @Input() isBart: boolean = false

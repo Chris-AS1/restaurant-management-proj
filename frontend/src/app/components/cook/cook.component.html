@@ -8,32 +8,6 @@
 
   <br>
 
-  <div class="res-div" *ngIf="ordersCookingMessage !== undefined">
-    {{ ordersCookingMessage }}
-  </div>
-  <div *ngIf="ordersCooking === undefined || ordersCooking.length === 0">
-    There are no orders being cooked
-  </div>
-
-  <br>
-
-  <div class="order-div" *ngIf="ordersCooking !== undefined">
-    <mat-card class="order-card" *ngFor="let order of ordersCooking">
-      <mat-card-header>
-        <mat-card-title>Table {{ order.table_num }} order</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>Ordered at: {{ order.order_time | date:'shortTime'}} </p>
-        <p>Dishes Ordered:</p>
-        <ul>
-          <li *ngFor="let i of order.items">{{ i }}</li>
-        </ul>
-      </mat-card-content>
-
-      <mat-card-actions>
-        <button color="primary" (click)="finishOrder(order.table_num)" mat-raised-button>FINISH</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+  <app-orderarray iconName="local_pizza" (buttonFunction)="finishOrder($event)" buttonText="FINISH" [ordersProcessing]="ordersCooking"></app-orderarray>
 
 </div>
