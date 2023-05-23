@@ -10,7 +10,7 @@
   <div class="res-div" *ngIf="ordersProcessingMessage !== undefined">
     {{ ordersProcessingMessage }}
   </div>
-  <div *ngIf="ordersProcessing !== undefined && ordersProcessing.length === 0">
+  <div *ngIf="ordersProcessing === undefined || ordersProcessing.length === 0">
     There are no orders being processed
   </div>
 

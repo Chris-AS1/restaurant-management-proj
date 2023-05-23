@@ -7,7 +7,7 @@
   <div class="res-div" *ngIf="ordersPendingMessage !== undefined">
     {{ ordersPendingMessage }}
   </div>
-  <div *ngIf="ordersPending !== undefined && ordersPending.length === 0">
+  <div *ngIf="ordersPending === undefined || ordersPending.length === 0">
     There are no pending orders
   </div>
 

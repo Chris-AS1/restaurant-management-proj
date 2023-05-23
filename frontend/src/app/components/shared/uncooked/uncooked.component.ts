@@ -70,7 +70,6 @@ export class UncookedComponent {
     )
   }
 
-  // TODO test
   // Bartender only, start order
   processOrder(table_num: number) {
     this.http.get<NormalResponse>(this.roleRoute + "/begin_order/" + table_num).subscribe(

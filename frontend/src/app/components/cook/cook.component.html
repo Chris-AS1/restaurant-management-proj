@@ -11,7 +11,7 @@
   <div class="res-div" *ngIf="ordersCookingMessage !== undefined">
     {{ ordersCookingMessage }}
   </div>
-  <div *ngIf="ordersCooking !== undefined && ordersCooking.length === 0">
+  <div *ngIf="ordersCooking === undefined || ordersCooking.length === 0">
     There are no orders being cooked
   </div>
 
