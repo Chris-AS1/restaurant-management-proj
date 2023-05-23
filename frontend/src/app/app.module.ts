@@ -13,6 +13,7 @@ import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule} from "./material/material.module";
 import { UncookedComponent } from './components/shared/uncooked/uncooked.component';
+import { OrderarrayComponent } from './components/shared/orderarray/orderarray.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { UncookedComponent } from './components/shared/uncooked/uncooked.compone
     BartenderComponent,
     WaiterComponent,
     UncookedComponent,
+    OrderarrayComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,31 @@
+<div class="res-div" *ngIf="ordersProcessingMessage !== undefined">
+  {{ ordersProcessingMessage }}
+</div>
+<div *ngIf="ordersProcessing === undefined || ordersProcessing.length === 0">
+  No order is being processed
+</div>
+
+<br>
+
+<div class="order-div mat-body" *ngIf="ordersProcessing !== undefined">
+  <mat-card class="order-card" *ngFor="let order of ordersProcessing">
+    <mat-card-header>
+      <mat-card-title>TABLE {{ order.table_num }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Ordered at: {{ order.order_time | date:'shortTime'}} </p>
+      <p>Dishes Ordered:</p>
+      <mat-list>
+        <mat-list-item *ngFor="let i of order.items">
+          <div matListItemTitle>{{ i }}</div>
+          <mat-icon matListItemIcon>{{ iconName }}</mat-icon></mat-list-item>
+      </mat-list>
+    </mat-card-content>
+
+    <br>
+
+    <mat-card-actions *ngIf="showButton">
+      <button color="primary" (click)="finishOrder(order.table_num)" mat-raised-button>{{ buttonText }}</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
