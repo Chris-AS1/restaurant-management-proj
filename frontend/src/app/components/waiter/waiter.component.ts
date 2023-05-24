@@ -39,4 +39,19 @@ export class WaiterComponent {
     )
   }
 
+  bookTable(table_num: number) {
+    // TODO endpoint
+    this.http.get<TableList>(this.roleRoute + "/book_table/" + table_num).subscribe(
+      (data) => {
+        if (data.success) {
+          this.tablesCurrent = data.message
+        } else {
+          this.tablesMessage = "Error"
+        }
+      },
+      (err) => {
+        this.tablesMessage = "Error: " + err.statusText
+      }
+    )
+  }
 }

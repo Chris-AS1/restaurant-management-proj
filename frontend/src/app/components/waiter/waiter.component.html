@@ -22,6 +22,9 @@
         <p>Occupied Seats: {{ table.occupied_seats }}</p>
         <p>Waiter Name: {{ table.waiter_info![0].username }}</p>
       </mat-card-content>
+      <mat-card-actions *ngIf="table.seats - table.occupied_seats > 0">
+        <button color="primary" (click)="bookTable(table.table_num)" mat-raised-button>BOOK</button>
+      </mat-card-actions>
     </mat-card>
   </div>
 </div>
