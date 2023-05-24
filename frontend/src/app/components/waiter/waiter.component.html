@@ -1,1 +1,27 @@
-<p>waiter works!</p>
+<h1>Waiter Dashboard</h1>
+
+<h1>Table Status</h1>
+
+<br>
+
+<div class="res-div" *ngIf="tablesMessage !== undefined">
+  {{ tablesMessage }}
+</div>
+<div *ngIf="tablesCurrent === undefined || tablesCurrent.length === 0">
+  There are no Tables set up
+</div>
+
+<div id="view_tables">
+  <div class="tables-div" *ngIf="tablesCurrent !== undefined">
+    <mat-card class="table-card" *ngFor="let table of tablesCurrent">
+      <mat-card-header>
+        <mat-card-title>Table {{ table.table_num }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Available Seats: {{ table.seats }}</p>
+        <p>Occupied Seats: {{ table.occupied_seats }}</p>
+        <p>Waiter ID: {{ table.waiter_id }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
