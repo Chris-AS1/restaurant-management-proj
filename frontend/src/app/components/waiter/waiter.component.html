@@ -20,10 +20,10 @@
       <mat-card-content>
         <p>Available Seats: {{ table.seats }}</p>
         <p>Occupied Seats: {{ table.occupied_seats }}</p>
-        <p>Waiter Name: {{ table.waiter_info![0].username }}</p>
+        <p>Waiter: {{ table.waiter_info![0].username }}</p>
       </mat-card-content>
       <mat-card-actions *ngIf="table.seats - table.occupied_seats > 0">
-        <button color="primary" (click)="bookTable(table.table_num)" mat-raised-button>BOOK</button>
+        <button color="primary" (click)="openDialog(table.table_num, table.seats)" mat-raised-button>BOOK</button>
       </mat-card-actions>
     </mat-card>
   </div>

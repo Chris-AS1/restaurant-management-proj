@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule} from "./material/material.module";
 import { UncookedComponent } from './components/shared/uncooked/uncooked.component';
 import { OrderarrayComponent } from './components/shared/orderarray/orderarray.component';
+import { BookTableSeatsComponent } from './components/dialogs/book-table-seats/book-table-seats.component';
 
 @NgModule({
   declarations: [
