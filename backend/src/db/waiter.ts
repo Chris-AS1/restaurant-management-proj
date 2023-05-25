@@ -18,3 +18,9 @@ export const getTables = async () => {
     return res as Table[]
 }
 
+export const bookTable = async (table_num: number, occupied_seats: number, waiter_id: any) => {
+    const res = await tableModel.findOneAndUpdate({ table_num: table_num }, {
+        occupied_seats: occupied_seats,
+        waiter_id: waiter_id
+    })
+}
