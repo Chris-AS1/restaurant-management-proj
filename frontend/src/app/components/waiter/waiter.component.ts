@@ -27,7 +27,7 @@ export class WaiterComponent {
 
   openDialog(table_num: number, max_seats: number): void {
     const dialogRef = this.dialog.open(BookTableSeatsComponent, {
-      data: { seats: 0, max_seats: max_seats, table_num: table_num },
+      data: { seats: 1, max_seats: max_seats, table_num: table_num },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -57,7 +57,7 @@ export class WaiterComponent {
 
   bookTable(table_num: number, seats_booked: number) {
     // TODO endpoint, post with seats
-    this.http.post<NormalResponse>(this.roleRoute + "/book_table/" + table_num, {"seats_booked" : seats_booked}).subscribe(
+    this.http.post<NormalResponse>(this.roleRoute + "/book_table/" + table_num, { "seats_booked": seats_booked }).subscribe(
       (data) => {
         if (data.success) {
           this.tablesMessage = data.message

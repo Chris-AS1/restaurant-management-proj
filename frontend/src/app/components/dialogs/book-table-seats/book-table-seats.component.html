@@ -3,7 +3,7 @@
   <p>How many seats should be occupied?</p>
   <mat-form-field>
     <mat-label>Seats</mat-label>
-    <input matInput type="number" [max]="data.max_seats" min="0" [(ngModel)]="data.seats">
+    <input matInput type="number" [max]="data.max_seats" min="1" [(ngModel)]="data.seats">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
