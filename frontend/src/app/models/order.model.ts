@@ -6,9 +6,10 @@ export interface Order {
   items_info?: (FoodType)[],
 }
 
-interface FoodType {
+export interface FoodType {
   name: string,
   price: number,
   prod_time: number,
   drink: boolean,
 }
+

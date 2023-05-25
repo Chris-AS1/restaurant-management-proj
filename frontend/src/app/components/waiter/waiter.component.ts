@@ -6,6 +6,9 @@ import { environment } from 'environment';
 import { MatDialog } from '@angular/material/dialog';
 import { BookTableSeatsComponent } from '../dialogs/book-table-seats/book-table-seats.component';
 import { NormalResponse } from 'src/app/models/normal.response.model';
+import { FoodType } from 'src/app/models/order.model';
+import { FoodList } from 'src/app/models/foodlist.response.model';
+import { NewOrder } from '../../models/neworder.model';
 
 @Component({
   selector: 'app-waiter',
@@ -19,10 +22,16 @@ export class WaiterComponent {
   tablesCurrent?: Table[]
   tablesMessage?: string
 
+  menuCurrent?: FoodType[]
+  menuMessage?: string
+
+  currentNewOrder?: NewOrder
+
   constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.intervalRefresh = setInterval(() => this.getTables(), environment.REFRESH_INTERVAL)
+    this.getMenu()
   }
 
   openDialog(table_num: number, max_seats: number): void {
@@ -55,9 +64,55 @@ export class WaiterComponent {
     )
   }
 
+  getMenu() {
+    this.menuMessage = undefined
+
+    this.http.get<FoodList>(this.roleRoute + "/get_menu/").subscribe(
+      (data) => {
+        if (data.success) {
+          this.menuCurrent = data.message
+        } else {
+          this.menuMessage = "Error"
+        }
+      },
+      (err) => {
+        this.menuMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
   bookTable(table_num: number, seats_booked: number) {
     // TODO endpoint, post with seats
+    // TODO test
     this.http.post<NormalResponse>(this.roleRoute + "/book_table/" + table_num, { "seats_booked": seats_booked }).subscribe(
+      (data) => {
+        if (data.success) {
+          this.tablesMessage = data.message
+        } else {
+          this.tablesMessage = "Error"
+        }
+      },
+      (err) => {
+        this.tablesMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
+  addToOrder(item_name: string) {
+    // TODO test
+    if (this.currentNewOrder) {
+      this.currentNewOrder.items.push()
+    } else {
+      this.currentNewOrder = {
+        table_num: 0,
+        "items": [item_name]
+      }
+    }
+  }
+
+  sendOrder() {
+    // TODO test
+    this.http.post<NormalResponse>(this.roleRoute + "/place_order/", this.currentNewOrder).subscribe(
       (data) => {
         if (data.success) {
           this.tablesMessage = data.message

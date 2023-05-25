@@ -28,3 +28,29 @@
     </mat-card>
   </div>
 </div>
+
+<h1>Place Order</h1>
+<div class="res-div" *ngIf="menuMessage !== undefined">
+  {{ menuMessage }}
+</div>
+<div *ngIf="menuCurrent === undefined || menuCurrent.length === 0">
+  The menu is empty
+</div>
+
+<div id="view_menu">
+  <div class="food-div" *ngIf="menuCurrent !== undefined">
+    <mat-card class="menu-card" *ngFor="let item of menuCurrent">
+      <mat-card-header>
+        <mat-card-title>{{ item.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Prep Time: {{ item.prod_time }}</p>
+        <p>Price: € {{ item.price }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button color="primary" (click)="addToOrder(item.name)" mat-raised-button>ADD</button>
+      </mat-card-actions>
+    </mat-card>
+    <button (click)="sendOrder()">PLACE ORDER</button>
+  </div>
+</div>

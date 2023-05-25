@@ -1,7 +1,8 @@
 import express from "express"
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { TableList } from "../models/responses/tablelist.response.model"
-import { bookTable, getTables } from "../db/waiter"
+import { bookTable, getMenu, getTables, placeOrder } from "../db/waiter"
+import { FoodList } from "../models/responses/menu.response.model";
 
 var router = express.Router();
 
@@ -35,6 +36,34 @@ router.post('/book_table/:table_num', function(req, res) {
                 res.status(400)
                 res.send({ success: false, message: "Error booking the table" } as NormalResponse)
             }) */
+});
+
+router.get('/get_menu', function(req, res) {
+    // TODO test
+    getMenu().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as FoodList)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error retrieving the menu" } as NormalResponse)
+            })
+});
+
+router.post('/place_order/', function(req, res) {
+    // TODO test
+    const { table_num, items } = req.body
+
+    placeOrder(table_num, items).then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as FoodList)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error placing the order" } as NormalResponse)
+            })
 });
 
 module.exports = router;
