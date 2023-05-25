@@ -20,8 +20,11 @@ router.get('/get_tables', function(req, res) {
 router.post('/book_table/:table_num', function(req, res) {
     const table_num: number = parseInt(req.params.table_num)
     const { seats_booked } = req.body
+
+    res.send({ success: false, message: "Error booking the table" } as NormalResponse)
+
     // TODO add JWT
-    const jwt_token = req.headers.authorization
+    /* const jwt_token = req.headers.authorization
 
     bookTable(table_num, seats_booked, null).then(
         data => {
@@ -31,7 +34,7 @@ router.post('/book_table/:table_num', function(req, res) {
             err => {
                 res.status(400)
                 res.send({ success: false, message: "Error booking the table" } as NormalResponse)
-            })
+            }) */
 });
 
 module.exports = router;
