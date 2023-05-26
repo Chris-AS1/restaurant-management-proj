@@ -6,7 +6,7 @@ import { tableModel } from "../schemas/table.schema"
 
 const pino = require('pino')()
 
-export const getTable = async () => {
+export const getTables = async () => {
     const res = await tableModel.aggregate([
         {
             "$lookup": {
@@ -34,12 +34,11 @@ export const bookTable = async (table_num: number, occupied_seats: number, waite
     })
 }
 
-export const placeOrder = async(table_num: number, items: string[]) => {
+export const placeOrder = async (table_num: number, items: string[]) => {
     const newOrder = await new orderModel({
         table_num: table_num,
         items: items,
         order_time: Date.now(),
         paid: false,
     }).save()
-
 }

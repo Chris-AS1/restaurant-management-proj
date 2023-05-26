@@ -35,7 +35,7 @@
 
 <div id="create_receipt">
   <h1>Create Receipt</h1>
-
+  <!-- TODO check {{ table }}  -->
   <form #receipt_form="ngForm" (submit)="createReceipt(receipt_form)">
     <mat-radio-group name="table_num" *ngIf="tablesToPay" required ngModel>
       <p>Select one of those tables:</p>

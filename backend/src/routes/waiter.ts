@@ -1,8 +1,8 @@
 import express from "express"
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { TableList } from "../models/responses/tablelist.response.model"
-import { bookTable, getMenu, getTables, placeOrder } from "../db/waiter"
-import { FoodList } from "../models/responses/menu.response.model";
+import {getMenu, getTables, placeOrder } from "../db/waiter"
+import { FoodList } from "../models/responses/foodlist.response.model";
 
 var router = express.Router();
 
@@ -58,7 +58,7 @@ router.post('/place_order/', function(req, res) {
     placeOrder(table_num, items).then(
         data => {
             res.status(200)
-            res.send({ success: true, message: data } as FoodList)
+            res.send({ success: true, message: "Order placed" })
         }).catch(
             err => {
                 res.status(400)

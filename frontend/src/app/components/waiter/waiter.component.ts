@@ -21,6 +21,8 @@ export class WaiterComponent {
 
   tablesCurrent?: Table[]
   tablesMessage?: string
+  tablesAvail?: Table[]
+  tableSelected?: string
 
   menuCurrent?: FoodType[]
   menuMessage?: string
@@ -54,6 +56,13 @@ export class WaiterComponent {
       (data) => {
         if (data.success) {
           this.tablesCurrent = data.message
+          let tmpTables = []
+          for (let table of this.tablesCurrent) {
+            if (table.occupied_seats > 0) {
+              tmpTables.push(table)
+            }
+          }
+          this.tablesAvail = tmpTables
         } else {
           this.tablesMessage = "Error"
         }
@@ -101,13 +110,16 @@ export class WaiterComponent {
   addToOrder(item_name: string) {
     // TODO test
     if (this.currentNewOrder) {
-      this.currentNewOrder.items.push()
+      this.currentNewOrder.items.push(item_name)
     } else {
-      this.currentNewOrder = {
-        table_num: 0,
-        "items": [item_name]
+      if (this.tableSelected) {
+        this.currentNewOrder = {
+          table_num: parseInt(this.tableSelected),
+          "items": [item_name]
+        }
       }
     }
+    console.log(this.currentNewOrder, this.tableSelected);
   }
 
   sendOrder() {

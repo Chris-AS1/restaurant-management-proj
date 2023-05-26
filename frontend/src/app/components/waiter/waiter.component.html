@@ -37,20 +37,27 @@
   The menu is empty
 </div>
 
+
+<mat-radio-group name="table_num" *ngIf="tablesAvail" required [(ngModel)]="tableSelected">
+  <p>Select one of those tables:</p>
+  <mat-radio-button *ngFor="let table of tablesAvail" [value]="table">{{ table.table_num }}</mat-radio-button>
+</mat-radio-group>
+
+
 <div id="view_menu">
   <div class="food-div" *ngIf="menuCurrent !== undefined">
-    <mat-card class="menu-card" *ngFor="let item of menuCurrent">
+    <mat-card class="food-card" *ngFor="let item of menuCurrent">
       <mat-card-header>
         <mat-card-title>{{ item.name }}</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>Prep Time: {{ item.prod_time }}</p>
-        <p>Price: € {{ item.price }}</p>
+        <p>Prep Time: <b>{{ item.prod_time }} min</b></p>
+        <p>Price: <b>€{{ item.price }}</b></p>
       </mat-card-content>
       <mat-card-actions>
         <button color="primary" (click)="addToOrder(item.name)" mat-raised-button>ADD</button>
       </mat-card-actions>
     </mat-card>
-    <button (click)="sendOrder()">PLACE ORDER</button>
   </div>
+  <button mat-raised-button (click)="sendOrder()" color="primary" *ngIf="menuCurrent !== undefined">PLACE ORDER</button>
 </div>
