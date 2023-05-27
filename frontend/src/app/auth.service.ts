@@ -14,7 +14,7 @@ export class AuthService {
   private loggedID?: string;
 
   // TO REMOVE TESTING ONLY
-  private loggedRole?: Roles = Roles.WAITER;
+  private loggedRole?: Roles = Roles.BARTENDER;
 
   constructor(private http: HttpClient) { }
 

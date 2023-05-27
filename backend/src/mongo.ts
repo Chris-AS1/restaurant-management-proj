@@ -50,6 +50,12 @@ const insertDefaultValues = async () => {
         order_time: Date.now()
     })
 
+    const DrinkOrder2 = new orderModel({
+        items: [WaterType.name],
+        table_num: 42,
+        order_time: Date.now()
+    })
+
     const FoodOrder1 = new orderModel({
         items: [SpaghettiType.name, PizzaType.name, CopertoType.name],
         table_num: 42,
@@ -76,6 +82,7 @@ const insertDefaultValues = async () => {
     CocaColaType.save(),
     FoodOrder1.save(),
     DrinkOrder1.save(),
+    DrinkOrder2.save(),
     Table23.save(),
     Table42.save()])
         .then(data => pino.info(data))

@@ -47,6 +47,7 @@ export const startCooking = async (table_num: number) => {
             ...waitingQueueParams,
             {
                 "$match": {
+                    table_num: table_num,
                     items_info: {
                         $elemMatch: {
                             drink: false
@@ -74,6 +75,7 @@ export const finishCooking = async (table_num: number) => {
             ...processingQueueParams,
             {
                 "$match": {
+                    table_num: table_num,
                     items_info: {
                         $elemMatch: {
                             drink: false
