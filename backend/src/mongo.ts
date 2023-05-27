@@ -58,13 +58,13 @@ const insertDefaultValues = async () => {
 
     const Table23 = new tableModel({
         table_num: 23,
-        waiter_id: -1,
+        waiter_id: "645cfe6e49b4d03ea2bced23",
         seats: 10,
     })
 
     const Table42 = new tableModel({
         table_num: 42,
-        waiter_id: -1,
+        waiter_id: "645cfe6e49b4d03ea2bced23",
         seats: 10,
         occupied_seats: 4,
     })

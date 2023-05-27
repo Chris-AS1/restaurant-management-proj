@@ -5,7 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+
 const MaterialComponents = [
   MatRadioModule,
   MatInputModule,
@@ -14,6 +16,7 @@ const MaterialComponents = [
   MatCardModule,
   MatListModule,
   MatIconModule,
+  MatDialogModule,
 ]
 
 @NgModule({

@@ -3,11 +3,11 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.order-card, .table-card{
+.order-card, .table-card, .food-card {
   max-width: 300px;
 }
 
-.order-div, .tables-div {
+.order-div, .tables-div, .food-div {
   margin: 10px 0;
   display: flex;
   flex-wrap: wrap;

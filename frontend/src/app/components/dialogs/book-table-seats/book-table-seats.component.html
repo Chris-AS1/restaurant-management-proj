@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Book Table</h1>
+<div mat-dialog-content>
+  <p>How many seats should be occupied?</p>
+  <mat-form-field>
+    <mat-label>Seats</mat-label>
+    <input matInput type="number" [max]="data.max_seats" min="1" [(ngModel)]="data.seats">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  <button mat-button color="primary" [mat-dialog-close]="data.seats" cdkFocusInitial>BOOK</button>
+</div>
+
+

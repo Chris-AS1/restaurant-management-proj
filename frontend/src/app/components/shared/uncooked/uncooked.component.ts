@@ -28,6 +28,8 @@ export class UncookedComponent {
 
   ngOnInit() {
     this.roleRoute = environment.ROOT_URL + (this.isCook ? "/cook" : this.isBart ? "/bartender" : "")
+
+    this.refreshPendingOrders()
     this.intervalRefresh = setInterval(() => this.refreshPendingOrders(), environment.REFRESH_INTERVAL)
   }
 

@@ -1,1 +1,76 @@
-<p>waiter works!</p>
+<h1>Waiter Dashboard</h1>
+
+<h1>Table Status</h1>
+
+<br>
+
+<div class="res-div" *ngIf="tablesMessage !== undefined">
+  {{ tablesMessage }}
+</div>
+<div *ngIf="tablesCurrent === undefined || tablesCurrent.length === 0">
+  There are no Tables set up
+</div>
+
+<div id="view_tables">
+  <div class="tables-div" *ngIf="tablesCurrent !== undefined">
+    <mat-card class="table-card" *ngFor="let table of tablesCurrent">
+      <mat-card-header>
+        <mat-card-title>Table {{ table.table_num }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Available Seats: {{ table.seats }}</p>
+        <p>Occupied Seats: {{ table.occupied_seats }}</p>
+        <p>Waiter: {{ table.waiter_info![0].username }}</p>
+      </mat-card-content>
+      <mat-card-actions *ngIf="table.seats - table.occupied_seats > 0">
+        <button color="primary" (click)="openDialog(table.table_num, table.seats)" mat-raised-button>BOOK</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<h1>Place Order</h1>
+<div class="res-div" *ngIf="menuMessage !== undefined">
+  {{ menuMessage }}
+</div>
+<div *ngIf="menuCurrent === undefined || menuCurrent.length === 0">
+  The menu is empty
+</div>
+
+
+<mat-radio-group name="table_selected" *ngIf="tablesAvail" required [(ngModel)]="tableSelected">
+  <p>Select one of those tables:</p>
+  <mat-radio-button *ngFor="let table of tablesAvail" [value]="table.table_num">{{ table.table_num }}</mat-radio-button>
+</mat-radio-group>
+
+
+<div id="view_menu">
+  <div class="food-div" *ngIf="menuCurrent !== undefined">
+    <mat-card class="food-card" *ngFor="let item of menuCurrent">
+      <mat-card-header>
+        <mat-card-title>{{ item.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Prep Time: <b>{{ item.prod_time }} min</b></p>
+        <p>Price: <b>€{{ item.price }}</b></p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button color="primary" (click)="addToOrder(item.name)" mat-raised-button>ADD</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div class="res-div" *ngIf="currentNewOrder !== undefined">
+    Current dishes:
+    {{ currentNewOrder.items.join(", ") }}
+  </div>
+
+  <br>
+
+  <button mat-raised-button (click)="placeOrder()" color="primary" *ngIf="menuCurrent !== undefined">PLACE
+    ORDER</button>
+
+  <div class="res-div" *ngIf="orderMessage !== undefined">
+    {{ orderMessage }}
+  </div>
+</div>

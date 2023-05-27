@@ -10,10 +10,11 @@ import { environment } from 'environment';
 })
 export class AuthService {
   private loggedStatus: boolean = true;
-  private loggedUsername: string | undefined;
+  private loggedUsername?: string;
+  private loggedID?: string;
 
   // TO REMOVE TESTING ONLY
-  private loggedRole: Roles | undefined = Roles.BARTENDER;
+  private loggedRole?: Roles = Roles.WAITER;
 
   constructor(private http: HttpClient) { }
 
