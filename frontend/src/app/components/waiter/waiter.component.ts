@@ -122,12 +122,9 @@ export class WaiterComponent {
         }
       }
     }
-
-    console.log("current order", this.currentNewOrder);
   }
 
   placeOrder() {
-    // TODO test
     this.http.post<NormalResponse>(this.roleRoute + "/place_order/", this.currentNewOrder).subscribe(
       (data) => {
         if (data.success) {
