@@ -42,7 +42,6 @@ export class WaiterComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
       if (result) {
         this.bookTable(table_num, result)
       }
@@ -91,8 +90,7 @@ export class WaiterComponent {
   }
 
   bookTable(table_num: number, seats_booked: number) {
-    // TODO endpoint, post with seats
-    // TODO test
+    // TODO endpoint after jwt
     this.http.post<NormalResponse>(this.roleRoute + "/book_table/" + table_num, { "seats_booked": seats_booked }).subscribe(
       (data) => {
         if (data.success) {
@@ -108,7 +106,6 @@ export class WaiterComponent {
   }
 
   addToOrder(item_name: string) {
-    // TODO test
     if (this.currentNewOrder) {
       this.currentNewOrder.items.push(item_name)
     } else {
@@ -119,7 +116,8 @@ export class WaiterComponent {
         }
       }
     }
-    console.log(this.currentNewOrder, this.tableSelected);
+
+    console.log("current order", this.currentNewOrder);
   }
 
   sendOrder() {
@@ -128,6 +126,7 @@ export class WaiterComponent {
       (data) => {
         if (data.success) {
           this.tablesMessage = data.message
+          this.tableSelected = undefined
         } else {
           this.tablesMessage = "Error"
         }

@@ -38,9 +38,9 @@
 </div>
 
 
-<mat-radio-group name="table_num" *ngIf="tablesAvail" required [(ngModel)]="tableSelected">
+<mat-radio-group name="table_selected" *ngIf="tablesAvail" required [(ngModel)]="tableSelected">
   <p>Select one of those tables:</p>
-  <mat-radio-button *ngFor="let table of tablesAvail" [value]="table">{{ table.table_num }}</mat-radio-button>
+  <mat-radio-button *ngFor="let table of tablesAvail" [value]="table.table_num">{{ table.table_num }}</mat-radio-button>
 </mat-radio-group>
 
 
