@@ -59,7 +59,16 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  <button mat-raised-button (click)="placeOrder()" color="primary" *ngIf="menuCurrent !== undefined">PLACE ORDER</button>
+
+  <div class="res-div" *ngIf="currentNewOrder !== undefined">
+    Current dishes:
+    {{ currentNewOrder.items.join(", ") }}
+  </div>
+
+  <br>
+
+  <button mat-raised-button (click)="placeOrder()" color="primary" *ngIf="menuCurrent !== undefined">PLACE
+    ORDER</button>
 
   <div class="res-div" *ngIf="orderMessage !== undefined">
     {{ orderMessage }}
