@@ -59,5 +59,9 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  <button mat-raised-button (click)="sendOrder()" color="primary" *ngIf="menuCurrent !== undefined">PLACE ORDER</button>
+  <button mat-raised-button (click)="placeOrder()" color="primary" *ngIf="menuCurrent !== undefined">PLACE ORDER</button>
+
+  <div class="res-div" *ngIf="orderMessage !== undefined">
+    {{ orderMessage }}
+  </div>
 </div>

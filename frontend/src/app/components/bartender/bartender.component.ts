@@ -21,6 +21,7 @@ export class BartenderComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
+    this.refreshProcessingOrders()
     this.intervalRefresh = setInterval(() => this.refreshProcessingOrders(), environment.REFRESH_INTERVAL)
   }
 

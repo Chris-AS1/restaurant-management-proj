@@ -26,14 +26,20 @@ export class WaiterComponent {
 
   menuCurrent?: FoodType[]
   menuMessage?: string
+  orderMessage?: string
 
   currentNewOrder?: NewOrder
 
   constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   ngOnInit() {
-    this.intervalRefresh = setInterval(() => this.getTables(), environment.REFRESH_INTERVAL)
     this.getMenu()
+    this.getTables()
+    this.intervalRefresh = setInterval(() => this.getTables(), environment.REFRESH_INTERVAL)
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalRefresh)
   }
 
   openDialog(table_num: number, max_seats: number): void {
@@ -120,19 +126,19 @@ export class WaiterComponent {
     console.log("current order", this.currentNewOrder);
   }
 
-  sendOrder() {
+  placeOrder() {
     // TODO test
     this.http.post<NormalResponse>(this.roleRoute + "/place_order/", this.currentNewOrder).subscribe(
       (data) => {
         if (data.success) {
-          this.tablesMessage = data.message
+          this.orderMessage = data.message
           this.tableSelected = undefined
         } else {
-          this.tablesMessage = "Error"
+          this.orderMessage = "Error"
         }
       },
       (err) => {
-        this.tablesMessage = "Error: " + err.statusText
+        this.orderMessage = "Error: " + err.statusText
       }
     )
   }
