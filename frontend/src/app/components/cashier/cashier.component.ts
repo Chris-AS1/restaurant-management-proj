@@ -125,6 +125,7 @@ export class CashierComponent {
   }
 
   // Get orders waiting to be cooked, WAITING queue
+  // TODO REMOVE????
   refreshPendingOrders() {
     this.http.get<OrderList>(this.roleRoute + "/get_waiting/").subscribe(
       (data) => {

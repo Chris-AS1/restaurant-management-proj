@@ -27,7 +27,7 @@ export class UncookedComponent {
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.roleRoute = environment.ROOT_URL + (this.isCook ? "/cook" : this.isBart ? "/bartender" : "")
+    this.roleRoute = environment.ROOT_URL + (this.isCook ? "/cook" : this.isBart ? "/bartender" : "/cashier")
 
     this.refreshPendingOrders()
     this.intervalRefresh = setInterval(() => this.refreshPendingOrders(), environment.REFRESH_INTERVAL)

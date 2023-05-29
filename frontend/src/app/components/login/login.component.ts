@@ -26,7 +26,11 @@ export class LoginComponent {
         if (data.success) {
           this.Auth.setLoggedIn(true)
           this.Auth.setUsername(username)
-          this.Auth.setRole(data.role)
+          this.Auth.setRole(data.role) // TODO CHANGE TO JWT
+
+          localStorage.setItem('token', data.token)
+          console.log(data.token);
+
 
           if (data.role in Roles) {
             this.router.navigate([Roles[data.role].toLowerCase()])
