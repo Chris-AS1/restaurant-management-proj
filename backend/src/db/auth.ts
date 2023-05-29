@@ -7,10 +7,10 @@ export const getUser = async (username: string) => {
     return res
 }
 
-export const genToken = (username: string) => {
+export const genToken = (username: string, role: number) => {
     var token = jwt.sign({
         username: username,
-        role: 0,
+        role: role,
     }, environment.JWT_KEY, { expiresIn: '1h' })
 
     return token
