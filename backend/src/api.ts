@@ -6,8 +6,6 @@ import { expressjwt as jwt } from 'express-jwt';
 const _ = require('./mongo')
 const cors = require('cors');
 
-const pino = require('pino')()
-
 // Loads .env
 dotenv.config()
 const app = express()
@@ -57,3 +55,4 @@ app.use('/waiter', waiter)
 app.listen(port, () => {
     console.log(`API started on port ${port}`)
 })
+

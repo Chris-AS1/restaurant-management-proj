@@ -6,8 +6,16 @@ import { OrderList } from "../models/responses/orderlist.response.model";
 import { ReceiptResponse } from "../models/responses/receipt.response";
 import { TableList } from "../models/responses/tablelist.response.model"
 import { addUser, getUser, getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue } from "../db/cashier"
+import { environment } from "../environment";
+import { expressjwt as jwt } from 'express-jwt';
+import { Roles } from "../models/user.roles.model";
+import { jwtGuarding } from "../db/auth";
 
 var router = express.Router();
+
+router.use(jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }),
+    jwtGuarding(Roles.CASHIER)
+);
 
 router.post('/add_user', async function(req, res) {
     const { username, password, role }: User = req.body.user
