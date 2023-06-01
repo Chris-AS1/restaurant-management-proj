@@ -35,12 +35,12 @@ export class LoginComponent {
 
           // @ts-ignore
           const role = jwt_decode(data.token).role
-          this.Auth.setRole(role) // TODO CHANGE TO JWT
+          this.Auth.setRole(role)
 
           if (role in Roles) {
             this.router.navigate([Roles[role].toLowerCase()])
           } else {
-            console.log("Role out of scope",role);
+            console.log("Role out of scope", role);
             this.router.navigate([''])
           }
         } else {

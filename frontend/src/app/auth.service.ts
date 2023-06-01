@@ -11,7 +11,6 @@ import { environment } from 'environment';
 export class AuthService {
   private loggedStatus: boolean = true;
   private loggedUsername?: string;
-  private loggedID?: string;
 
   // TO REMOVE TESTING ONLY
   private loggedRole?: Roles;
