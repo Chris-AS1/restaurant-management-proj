@@ -24,14 +24,11 @@ export class LoginComponent {
     // TODO: test login
     this.Auth.getUserDetails({ username, password }).subscribe(
       (data) => {
-        console.log(data);
-
         if (data.success) {
+          localStorage.setItem('token', data.token)
+
           this.Auth.setLoggedIn(true)
           this.Auth.setUsername(username)
-
-          localStorage.setItem('token', data.token)
-          console.log(data.token);
 
           // @ts-ignore
           const role = jwt_decode(data.token).role
@@ -45,7 +42,10 @@ export class LoginComponent {
           }
         } else {
           this.loginMessage = data.message
+          localStorage.removeItem('token')
           this.Auth.setLoggedIn(false)
+          this.Auth.setUsername(undefined)
+          this.Auth.setRole(undefined)
           this.router.navigate([''])
         }
       })

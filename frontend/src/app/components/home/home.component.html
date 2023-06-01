@@ -1,6 +1,7 @@
-  <a routerLink="/login">Login</a>
+  <a routerLink="/login" *ngIf="!isLoggedIn">Login</a>
+  <a routerLink="/logout" *ngIf="isLoggedIn">Logout</a>
 
-  <a routerLink="/cashier">Cashier</a>
+  <!-- <a routerLink="/cashier">Cashier</a>
   <a routerLink="/cook">Cook</a>
   <a routerLink="/bartender">Bartender</a>
-  <a routerLink="/waiter">Waiter</a>
+  <a routerLink="/waiter">Waiter</a> -->

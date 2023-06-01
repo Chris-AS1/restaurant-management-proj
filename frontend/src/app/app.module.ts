@@ -16,9 +16,9 @@ import { UncookedComponent } from './components/shared/uncooked/uncooked.compone
 import { OrderarrayComponent } from './components/shared/orderarray/orderarray.component';
 import { JwtModule } from "@auth0/angular-jwt";
 import { environment } from 'environment';
+import { LogoutComponent } from './components/logout/logout.component';
 
 export function tokenGetter() {
-  console.log("momma");
   return localStorage.getItem("token");
 }
 
@@ -33,6 +33,7 @@ export function tokenGetter() {
     WaiterComponent,
     UncookedComponent,
     OrderarrayComponent,
+    LogoutComponent,
   ],
   imports: [
     HttpClientModule,

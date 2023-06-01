@@ -4,15 +4,16 @@ import { User } from './models/user.model';
 import { LoginResponse } from './models/login.response.model';
 import { Roles } from './models/user.roles.model';
 import { environment } from 'environment';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedStatus: boolean = true;
-  private loggedUsername?: string;
+  private loggedStatus: boolean = false;
+  private loggedStatusBehave: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  // TO REMOVE TESTING ONLY
+  private loggedUsername?: string;
   private loggedRole?: Roles;
 
   constructor(private http: HttpClient) { }
@@ -21,6 +22,9 @@ export class AuthService {
     return this.loggedStatus;
   }
 
+  get isLoggedInBehave() {
+    return this.loggedStatusBehave;
+  }
   get currentRole() {
     return this.loggedRole;
   }
@@ -31,19 +35,19 @@ export class AuthService {
 
   setLoggedIn(v: boolean) {
     this.loggedStatus = v
+    this.loggedStatusBehave.next(v)
   }
 
-  setUsername(username: string) {
+  setUsername(username?: string) {
     this.loggedUsername = username;
   }
 
-  setRole(role: Roles) {
+  setRole(role?: Roles) {
     this.loggedRole = role;
   }
 
   getUserDetails(u: User) {
     const data = { "username": u.username, "password": u.password }
-    // TODO endpoint
     return this.http.post<LoginResponse>(environment.ROOT_URL + "/login", data)
   }
 }
