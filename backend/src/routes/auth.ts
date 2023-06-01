@@ -2,23 +2,12 @@ import express from "express"
 import { genToken, getUser } from '../db/auth';
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { LoginResponse } from "../models/responses/login.response.model";
-import { Roles } from "../models/user.roles.model";
-
 
 var router = express.Router();
 
 router.post('/login', async (req, res) => {
     // TODO encrypt password, verify password
-    // TO REMOVE TEST ONLY
-    const login_res: LoginResponse = {
-        success: true,
-        token: genToken(req.body.username, Roles.CASHIER),
-    }
-
-    res.send(login_res)
-
-
-    /* const cur_user = await getUser(req.body.username)
+    const cur_user = await getUser(req.body.username)
     if (cur_user) {
         const hash_psw = cur_user.password
         const unk_psw = req.body.password // TODO hash
@@ -33,7 +22,7 @@ router.post('/login', async (req, res) => {
     } else {
         res.status(401)
         res.send({ success: false, message: "Wrong credentials" } as NormalResponse)
-    } */
+    }
 })
 
 module.exports = router;
