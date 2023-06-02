@@ -14,6 +14,7 @@ export class AuthService {
   private loggedStatusBehave: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private loggedUsername?: string;
+  private loggedUsernameBehave: BehaviorSubject<string|undefined> = new BehaviorSubject<string|undefined>(undefined);
   private loggedRole?: Roles;
 
   constructor(private http: HttpClient) { }
@@ -33,6 +34,10 @@ export class AuthService {
     return this.loggedUsername;
   }
 
+  get currentUsernameBehave() {
+    return this.loggedUsernameBehave;
+  }
+
   setLoggedIn(v: boolean) {
     this.loggedStatus = v
     this.loggedStatusBehave.next(v)
@@ -40,6 +45,7 @@ export class AuthService {
 
   setUsername(username?: string) {
     this.loggedUsername = username;
+    this.loggedUsernameBehave.next(username)
   }
 
   setRole(role?: Roles) {

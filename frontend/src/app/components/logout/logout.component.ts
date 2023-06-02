@@ -11,6 +11,8 @@ export class LogoutComponent {
 
   ngOnInit() {
     this.Auth.setLoggedIn(false)
+    this.Auth.setRole(undefined)
+    this.Auth.setUsername(undefined)
     localStorage.removeItem('token')
   }
 }

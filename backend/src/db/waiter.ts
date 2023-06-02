@@ -31,7 +31,7 @@ export const bookTable = async (table_num: number, occupied_seats: number, waite
     const res = await tableModel.findOneAndUpdate({ table_num: table_num }, {
         occupied_seats: occupied_seats,
         waiter_id: waiter_id
-    })
+    }).exec()
 }
 
 export const placeOrder = async (table_num: number, items: string[]) => {

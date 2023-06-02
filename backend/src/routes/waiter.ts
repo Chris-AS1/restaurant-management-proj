@@ -1,7 +1,7 @@
 import express from "express"
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { TableList } from "../models/responses/tablelist.response.model"
-import { getMenu, getTables, placeOrder } from "../db/waiter"
+import { bookTable, getMenu, getTables, placeOrder } from "../db/waiter"
 import { FoodList } from "../models/responses/foodlist.response.model";
 import { jwtGuarding } from "../db/auth";
 import { Roles } from "../models/user.roles.model";
@@ -26,16 +26,15 @@ router.get('/get_tables', function(req, res) {
             })
 });
 
-router.post('/book_table/:table_num', function(req, res) {
+router.post('/book_table/:table_num', jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }), function(req, res) {
     const table_num: number = parseInt(req.params.table_num)
     const { seats_booked } = req.body
 
-    res.send({ success: false, message: "Error booking the table" } as NormalResponse)
-
     // TODO add JWT
-    /* const jwt_token = req.headers.authorization
+    // @ts-ignore
+    const user_id = req.auth.id
 
-    bookTable(table_num, seats_booked, null).then(
+    bookTable(table_num, seats_booked, user_id).then(
         data => {
             res.status(200)
             res.send({ success: true, message: "Table " + table_num + " has been booked" } as NormalResponse)
@@ -43,7 +42,7 @@ router.post('/book_table/:table_num', function(req, res) {
             err => {
                 res.status(400)
                 res.send({ success: false, message: "Error booking the table" } as NormalResponse)
-            }) */
+            })
 });
 
 router.get('/get_menu', function(req, res) {

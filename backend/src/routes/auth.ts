@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
         if (hash_psw === unk_psw) {
             const login_res: LoginResponse = {
                 success: true,
-                token: genToken(req.body.username, cur_user.role),
+                token: genToken(cur_user._id.toString(), req.body.username, cur_user.role),
             }
 
             res.send(login_res)
