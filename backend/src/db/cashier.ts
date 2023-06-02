@@ -114,10 +114,7 @@ export const getTables = async () => {
                 as: "waiter_info"
             }
         }
-    ])
-
-    pino.err("tables:")
-    pino.warn(res)
+    ]).exec()
 
     return res as Table[]
 }
