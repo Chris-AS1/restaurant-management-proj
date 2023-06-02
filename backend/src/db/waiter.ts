@@ -28,10 +28,12 @@ export const getMenu = async () => {
 }
 
 export const bookTable = async (table_num: number, occupied_seats: number, waiter_id: any) => {
-    const res = await tableModel.findOneAndUpdate({ table_num: table_num }, {
-        occupied_seats: occupied_seats,
-        waiter_id: waiter_id
-    }).exec()
+    const table = await tableModel.findOne({ table_num: table_num }).exec()
+    if (table) {
+        table.occupied_seats = Math.min(occupied_seats, table.seats)
+        table.waiter_id = waiter_id
+        await table.save()
+    }
 }
 
 export const placeOrder = async (table_num: number, items: string[]) => {

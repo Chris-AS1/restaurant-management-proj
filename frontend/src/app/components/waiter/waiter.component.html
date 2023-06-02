@@ -22,8 +22,9 @@
         <p>Occupied Seats: {{ table.occupied_seats }}</p>
         <p>Waiter: {{ table.waiter_info![0].username }}</p>
       </mat-card-content>
-      <mat-card-actions *ngIf="table.seats - table.occupied_seats > 0">
-        <button color="primary" (click)="openDialog(table.table_num, table.seats)" mat-raised-button>BOOK</button>
+      <mat-card-actions >
+        <button color="primary" *ngIf="table.seats - table.occupied_seats > 0" (click)="openDialog(table.table_num, table.seats)" mat-raised-button>BOOK</button>
+        <button color="secondary" *ngIf="table.occupied_seats > 0" (click)="bookTable(table.table_num, 0)" mat-raised-button>CLEAR</button>
       </mat-card-actions>
     </mat-card>
   </div>
