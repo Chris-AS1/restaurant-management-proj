@@ -15,6 +15,7 @@ export class AuthService {
 
   private loggedUsername?: string;
   private loggedUsernameBehave: BehaviorSubject<string|undefined> = new BehaviorSubject<string|undefined>(undefined);
+
   private loggedRole?: Roles;
 
   constructor(private http: HttpClient) { }

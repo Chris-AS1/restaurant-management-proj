@@ -65,7 +65,7 @@ router.post('/place_order/', function(req, res) {
     placeOrder(table_num, items).then(
         data => {
             res.status(200)
-            res.send({ success: true, message: "Order placed" })
+            res.send({ success: true, message: "Order placed" } as NormalResponse)
         }).catch(
             err => {
                 res.status(400)

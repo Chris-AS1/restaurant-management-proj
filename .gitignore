@@ -15,4 +15,5 @@ node_modules/
 environment*.ts
 .env
 db_data
+swagger*
 
