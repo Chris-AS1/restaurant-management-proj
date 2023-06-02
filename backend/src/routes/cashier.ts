@@ -29,7 +29,7 @@ router.post('/add_user', async function(req, res) {
     addUser(u).then(
         data => {
             res.status(200)
-            res.send({ success: true, message: JSON.stringify(data) } as RegisterResponse)
+            res.send({ success: true, message: "Added user " + data.username} as RegisterResponse)
         }
     ).catch(
         err => {

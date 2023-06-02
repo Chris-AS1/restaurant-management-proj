@@ -11,7 +11,8 @@ const pino = require('pino')()
 
 export const addUser = async (u: User) => {
     const newUser = new userModel(u)
-    return newUser.save()
+    await newUser.save()
+    return newUser
 }
 
 export const getUser = async (username: string) => {
