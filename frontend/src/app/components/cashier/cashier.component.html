@@ -70,7 +70,9 @@
   </form>
 </div>
 
-<app-uncooked></app-uncooked>
+<h2>Pending Orders</h2>
+<button mat-raised-button type="button" color="primary" (click)="refreshPendingOrders()">Refresh</button>
+<app-orderarray iconName="restaurant_menu" [showButton]="false" [ordersProcessing]="ordersPending"></app-orderarray>
 
 <div id="view_tables">
   <h1>View Free Tables</h1>
