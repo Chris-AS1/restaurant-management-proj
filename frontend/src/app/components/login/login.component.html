@@ -12,5 +12,9 @@
 
   <br>
 
+    <div class="res-div" *ngIf="loginMessage !== undefined">
+      {{ loginMessage }}
+    </div>
+
   <button mat-raised-button color="primary" type="submit">Login</button>
 </form>

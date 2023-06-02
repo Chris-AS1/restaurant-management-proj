@@ -11,10 +11,16 @@ import { WaiterComponent } from './components/waiter/waiter.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule} from "./material/material.module";
+import { MaterialModule } from "./material/material.module";
 import { UncookedComponent } from './components/shared/uncooked/uncooked.component';
 import { OrderarrayComponent } from './components/shared/orderarray/orderarray.component';
-import { BookTableSeatsComponent } from './components/dialogs/book-table-seats/book-table-seats.component';
+import { JwtModule } from "@auth0/angular-jwt";
+import { environment } from 'environment';
+import { LogoutComponent } from './components/logout/logout.component';
+
+export function tokenGetter() {
+  return localStorage.getItem("token");
+}
 
 @NgModule({
   declarations: [
@@ -27,14 +33,22 @@ import { BookTableSeatsComponent } from './components/dialogs/book-table-seats/b
     WaiterComponent,
     UncookedComponent,
     OrderarrayComponent,
+    LogoutComponent,
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: [environment.ROOT_URL.substring(7)],
+        disallowedRoutes: [],
+      },
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

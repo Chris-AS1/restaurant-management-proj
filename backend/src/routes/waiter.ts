@@ -1,10 +1,18 @@
 import express from "express"
 import { NormalResponse } from "../models/responses/normal.response.model";
 import { TableList } from "../models/responses/tablelist.response.model"
-import {getMenu, getTables, placeOrder } from "../db/waiter"
+import { getMenu, getTables, placeOrder } from "../db/waiter"
 import { FoodList } from "../models/responses/foodlist.response.model";
+import { jwtGuarding } from "../db/auth";
+import { Roles } from "../models/user.roles.model";
+import { environment } from "../environment";
+import { expressjwt as jwt } from 'express-jwt';
 
 var router = express.Router();
+
+router.use(jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }),
+    jwtGuarding(Roles.WAITER)
+);
 
 router.get('/get_tables', function(req, res) {
     getTables().then(
