@@ -40,7 +40,25 @@ export class CashierComponent {
   tablesCurrent?: Table[]
   tablesMessage?: string
 
+  intervalRefresh: number[] = []
+
   constructor(private http: HttpClient) { }
+
+  ngOnInit() {
+    this.refreshOrders()
+    this.refreshPendingOrders()
+    this.getTables()
+
+    this.intervalRefresh.push(setInterval(() => this.refreshOrders(), environment.REFRESH_INTERVAL))
+    this.intervalRefresh.push(setInterval(() => this.refreshPendingOrders(), environment.REFRESH_INTERVAL))
+    this.intervalRefresh.push(setInterval(() => this.getTables(), environment.REFRESH_INTERVAL))
+  }
+
+  ngOnDestroy() {
+    for (let x of this.intervalRefresh) {
+      clearInterval(x)
+    }
+  }
 
   registerUser(form: NgForm) {
     // parseInt shouldn't be needed.
@@ -74,7 +92,7 @@ export class CashierComponent {
 
   // Should get all orders but completed ones
   refreshOrders() {
-    this.receiptTotal = undefined
+    // this.receiptTotal = undefined
     this.receiptMessage = undefined
 
     this.http.get<OrderList>(this.roleRoute + "/get_unpaid/").subscribe(
@@ -125,7 +143,6 @@ export class CashierComponent {
   }
 
   // Get orders waiting to be cooked, WAITING queue
-  // TODO REMOVE????
   refreshPendingOrders() {
     this.http.get<OrderList>(this.roleRoute + "/get_waiting/").subscribe(
       (data) => {
@@ -143,7 +160,7 @@ export class CashierComponent {
 
   getTables() {
     this.tablesMessage = undefined
-    this.tablesCurrent = undefined
+    // this.tablesCurrent = undefined
 
     this.http.get<TableList>(this.roleRoute + "/get_tables/").subscribe(
       (data) => {
