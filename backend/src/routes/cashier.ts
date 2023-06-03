@@ -5,11 +5,12 @@ import { RegisterResponse } from "../models/responses/register.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
 import { ReceiptResponse } from "../models/responses/receipt.response";
 import { TableList } from "../models/responses/tablelist.response.model"
-import { addUser, getUser, getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue } from "../db/cashier"
+import { addUser, getUser, getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue, getAllUsers, deleteUser } from "../db/cashier"
 import { environment } from "../environment";
 import { expressjwt as jwt } from 'express-jwt';
 import { Roles } from "../models/user.roles.model";
 import { jwtGuarding } from "../db/auth";
+import { UserListResponse } from "../models/responses/userlist.response.model";
 
 var router = express.Router();
 
@@ -29,12 +30,42 @@ router.post('/user', async function(req, res) {
     addUser(u).then(
         data => {
             res.status(200)
-            res.send({ success: true, message: "Added user " + data.username} as RegisterResponse)
+            res.send({ success: true, message: "Added user " + data.username } as RegisterResponse)
         }
     ).catch(
         err => {
             res.status(400)
             res.send({ success: false, message: "Error creating user" } as RegisterResponse)
+        }
+    )
+});
+
+router.get('/user', async function(req, res) {
+    getAllUsers().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as UserListResponse)
+        }
+    ).catch(
+        err => {
+            res.status(400)
+            res.send({ success: false, message: "Error retrieving users" } as NormalResponse)
+        }
+    )
+});
+
+router.delete('/user', async function(req, res) {
+    const { username }: User = req.body.user
+
+    deleteUser(username).then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: "Removed user " + username } as NormalResponse)
+        }
+    ).catch(
+        err => {
+            res.status(400)
+            res.send({ success: false, message: "Error while deleting user" } as NormalResponse)
         }
     )
 });

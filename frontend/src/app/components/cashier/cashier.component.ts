@@ -104,6 +104,9 @@ export class CashierComponent {
         }
 
         this.tablesToPay = Array.from(tables_to_pay)
+        if (this.tablesToPay.length === 0) {
+          this.tablesToPay = undefined
+        }
       },
       (err) => {
         this.receiptMessage = "Error: " + err.statusText
