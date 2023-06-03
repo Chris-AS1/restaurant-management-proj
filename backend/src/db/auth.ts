@@ -1,4 +1,4 @@
-import { environment } from "../environment.dev";
+import { environment } from "../environment";
 import { Roles } from "../models/user.roles.model";
 import { userModel } from "../schemas/user.schema";
 
