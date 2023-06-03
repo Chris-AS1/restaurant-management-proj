@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import express from 'express'
-import { environment } from './environment.dev';
+import { environment } from './environment';
 import { expressjwt as jwt } from 'express-jwt';
 
 const _ = require('./mongo')
