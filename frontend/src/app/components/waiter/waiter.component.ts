@@ -106,7 +106,6 @@ export class WaiterComponent {
   }
 
   bookTable(table_num: number, seats_booked: number) {
-    // TODO endpoint after jwt
     this.http.post<NormalResponse>(this.roleRoute + "/book/" + table_num, { "seats_booked": seats_booked }).subscribe(
       (data) => {
         if (data.success) {
@@ -155,14 +154,14 @@ export class WaiterComponent {
     this.http.put<NormalResponse>(this.roleRoute + "/orders/" + table_num + "/deliver", {}).subscribe(
       (data) => {
         if (data.success) {
-          this.orderMessage = data.message
-          this.tableSelected = undefined
+          this.ordersReadyMessage = data.message
+          this.ordersReady = undefined
         } else {
-          this.orderMessage = "Error"
+          this.ordersReadyMessage = "Error"
         }
       },
       (err) => {
-        this.orderMessage = "Error: " + err.statusText
+        this.ordersReadyMessage = "Error: " + err.statusText
       }
     )
   }

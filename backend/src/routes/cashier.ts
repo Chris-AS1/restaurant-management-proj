@@ -149,7 +149,6 @@ router.get('/averageProcessingTime', function(req, res) {
 });
 
 router.get('/dailyRevenue', function(req, res) {
-    // TODO check implementation
     getDailyRevenue().then(
         data => {
             res.status(200)

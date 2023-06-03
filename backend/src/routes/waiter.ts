@@ -46,7 +46,6 @@ router.post('/book/:table_num', jwt({ secret: environment.JWT_KEY, algorithms: [
 });
 
 router.get('/menu', function(req, res) {
-    // TODO test
     getMenu().then(
         data => {
             res.status(200)
@@ -74,15 +73,15 @@ router.post('/orders/new', function(req, res) {
 
 router.put('/orders/:table_id/deliver', function(req, res) {
     const table_id = parseInt(req.params.table_id)
-        deliverOrder(table_id).then(
-            data => {
-                res.status(200)
-                res.send({ success: true, message: data } as NormalResponse)
-            }).catch(
-                err => {
-                    res.status(400)
-                    res.send({ success: false, message: "Error with the order delivery" } as NormalResponse)
-                })
+    deliverOrder(table_id).then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as NormalResponse)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error with the order delivery" } as NormalResponse)
+            })
 });
 
 // Get orders that are being cooked

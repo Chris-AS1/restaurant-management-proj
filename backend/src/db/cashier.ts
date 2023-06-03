@@ -108,7 +108,6 @@ export const getWaitingOrders = async () => {
 }
 
 export const getTables = async () => {
-    // TODO double check
     const res = await tableModel.aggregate([
         {
             "$lookup": {

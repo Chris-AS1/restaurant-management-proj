@@ -40,9 +40,31 @@ export const bookTable = async (table_num: number, occupied_seats: number, waite
 }
 
 export const placeOrder = async (table_num: number, items: string[]) => {
+    const menu = await foodTypeModel.find({}).exec()
+    let new_items = []
+    let menu_dict: any = {}
+
+    for(let f of menu) {
+        menu_dict[f.name] = f
+    }
+
+    for(let i = 0; i < items.length; i++) {
+        new_items[i] = menu_dict[items[i]]
+    }
+
+    const drinks = new_items.filter(i => i.drink)
+    const foods = new_items.filter(i => !i.drink)
+    
     await new orderModel({
         table_num: table_num,
-        items: items,
+        items: drinks.map(i => i.name),
+        order_time: Date.now(),
+        paid: false,
+    }).save()
+
+    await new orderModel({
+        table_num: table_num,
+        items: foods.map(i => i.name),
         order_time: Date.now(),
         paid: false,
     }).save()
