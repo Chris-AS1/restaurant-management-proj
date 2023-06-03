@@ -33,6 +33,20 @@
 </div>
 
 
+<div id="delete_user">
+  <h1>Delete User</h1>
+  <form #delete_user_form="ngForm" (submit)="deleteUser(delete_user_form)">
+    <mat-radio-group name="username" *ngIf="usersList" required ngModel>
+      <p>Select the user to be deleted:</p>
+      <mat-radio-button *ngFor="let user of usersList" [value]="user.username">{{ user.username }}</mat-radio-button>
+    </mat-radio-group>
+
+    <br>
+
+    <button mat-raised-button type="submit" color="primary">Delete User</button>
+  </form>
+</div>
+
 <div id="create_receipt">
   <h1>Create Receipt</h1>
   <!-- TODO check {{ table }}  -->

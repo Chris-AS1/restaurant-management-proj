@@ -12,6 +12,7 @@ import { Table } from '../../models/table.model';
 import { TableList } from 'src/app/models/tablelist.response.model';
 import { NormalResponse } from 'src/app/models/normal.response.model';
 import { Receipt } from "../../models/receipt.model"
+import { UserListResponse } from 'src/app/models/userlist.response.model';
 
 @Component({
   selector: 'app-cashier',
@@ -40,6 +41,9 @@ export class CashierComponent {
   tablesCurrent?: Table[]
   tablesMessage?: string
 
+  usersList?: User[]
+  usersListMessage?: string
+
   intervalRefresh: number[] = []
 
   constructor(private http: HttpClient) { }
@@ -48,10 +52,12 @@ export class CashierComponent {
     this.refreshOrders()
     this.refreshPendingOrders()
     this.getTables()
+    this.refreshUsers()
 
     this.intervalRefresh.push(setInterval(() => this.refreshOrders(), environment.REFRESH_INTERVAL))
     this.intervalRefresh.push(setInterval(() => this.refreshPendingOrders(), environment.REFRESH_INTERVAL))
     this.intervalRefresh.push(setInterval(() => this.getTables(), environment.REFRESH_INTERVAL))
+    this.intervalRefresh.push(setInterval(() => this.refreshUsers(), environment.REFRESH_INTERVAL))
   }
 
   ngOnDestroy() {
@@ -60,34 +66,69 @@ export class CashierComponent {
     }
   }
 
+  // Get list of current users
+  refreshUsers() {
+    this.http.get<UserListResponse>(this.roleRoute + "/user").subscribe(
+      (data) => {
+        if (data.success) {
+          this.usersList = data.message
+        } else {
+          this.usersListMessage = "Error"
+        }
+      },
+      (err) => {
+        this.usersListMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
+
+  // Deletes a user by username
+  deleteUser(form: NgForm) {
+    const username = form.value.username
+    if (username) {
+      this.http.delete<NormalResponse>(this.roleRoute + "/user/" + username).subscribe(
+        (data) => {
+          if (data.success) {
+            this.usersListMessage = data.message
+          } else {
+            this.usersListMessage = "Error"
+          }
+        },
+        (err) => {
+          this.usersListMessage = "Error: " + err.statusText
+        }
+      )
+    }
+  }
+
   registerUser(form: NgForm) {
     // parseInt shouldn't be needed.
     let roleN: number | undefined
     if (form.value.role) {
       roleN = parseInt(Roles[form.value.role.toUpperCase()])
-    }
+      this.registerMessage = undefined
 
-    this.registerMessage = undefined
-
-    const u: User = {
-      username: form.value.username,
-      password: form.value.password,
-      role: roleN
-    }
-
-    this.http.post<RegisterResponse>(this.roleRoute + "/user", { "user": u }).subscribe(
-      (data) => {
-        if (data.success) {
-          this.registerMessage = data.message
-          form.reset()
-        } else {
-          this.registerMessage = "Error"
-        }
-      },
-      (err) => {
-        this.registerMessage = "Error: " + err.statusText
+      const u: User = {
+        username: form.value.username,
+        password: form.value.password,
+        role: roleN
       }
-    )
+
+      this.http.post<RegisterResponse>(this.roleRoute + "/user", { "user": u }).subscribe(
+        (data) => {
+          if (data.success) {
+            this.registerMessage = data.message
+            form.reset()
+          } else {
+            this.registerMessage = "Error"
+          }
+        },
+        (err) => {
+          this.registerMessage = "Error: " + err.statusText
+        }
+      )
+    }
   }
 
   // Should get all orders but completed ones
@@ -133,7 +174,7 @@ export class CashierComponent {
     const table_num = form.value.table_num
     this.receiptTotal = undefined
     this.receiptMessage = undefined
-    // TODO CHECK URL
+
     this.http.get<ReceiptResponse>(this.roleRoute + "/receipt/" + table_num).subscribe(
       (data) => {
         if (data.success) {
@@ -149,7 +190,7 @@ export class CashierComponent {
   }
 
   payReceipt(table_num: number) {
-    // TODO CHECK URL
+
     this.http.put<NormalResponse>(this.roleRoute + "/receipt/" + table_num, {}).subscribe(
       (data) => {
         this.refreshOrders()

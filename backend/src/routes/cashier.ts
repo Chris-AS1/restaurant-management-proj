@@ -54,8 +54,8 @@ router.get('/user', async function(req, res) {
     )
 });
 
-router.delete('/user', async function(req, res) {
-    const { username }: User = req.body.user
+router.delete('/user/:username', async function(req, res) {
+    const username = req.params.username
 
     deleteUser(username).then(
         data => {
