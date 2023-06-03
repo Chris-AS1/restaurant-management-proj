@@ -75,7 +75,7 @@ export class CashierComponent {
       role: roleN
     }
 
-    this.http.post<RegisterResponse>(this.roleRoute + "/add_user", { "user": u }).subscribe(
+    this.http.post<RegisterResponse>(this.roleRoute + "/user", { "user": u }).subscribe(
       (data) => {
         if (data.success) {
           this.registerMessage = data.message
@@ -95,7 +95,7 @@ export class CashierComponent {
     // this.receiptTotal = undefined
     this.receiptMessage = undefined
 
-    this.http.get<OrderList>(this.roleRoute + "/get_unpaid/").subscribe(
+    this.http.get<OrderList>(this.roleRoute + "/orders/unpaid").subscribe(
       (data) => {
         // TODO sort by table
         const tables_to_pay = new Set<number>()
@@ -110,12 +110,28 @@ export class CashierComponent {
       })
   }
 
+  // Get orders waiting to be cooked, WAITING queue
+  refreshPendingOrders() {
+    this.http.get<OrderList>(this.roleRoute + "/orders/waiting").subscribe(
+      (data) => {
+        if (data.success) {
+          this.ordersPending = data.message
+        } else {
+          this.ordersPendingMessage = "Error"
+        }
+      },
+      (err) => {
+        this.ordersPendingMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
   createReceipt(form: NgForm) {
     const table_num = form.value.table_num
     this.receiptTotal = undefined
     this.receiptMessage = undefined
-
-    this.http.get<ReceiptResponse>(this.roleRoute + "/get_receipt/" + table_num).subscribe(
+    // TODO CHECK URL
+    this.http.get<ReceiptResponse>(this.roleRoute + "/receipt/" + table_num).subscribe(
       (data) => {
         if (data.success) {
           this.receiptTotal = data.message
@@ -130,7 +146,8 @@ export class CashierComponent {
   }
 
   payReceipt(table_num: number) {
-    this.http.get<NormalResponse>(this.roleRoute + "/pay_receipt/" + table_num).subscribe(
+    // TODO CHECK URL
+    this.http.put<NormalResponse>(this.roleRoute + "/receipt/" + table_num, {}).subscribe(
       (data) => {
         this.refreshOrders()
         this.receiptMessage = data.message
@@ -142,27 +159,11 @@ export class CashierComponent {
     )
   }
 
-  // Get orders waiting to be cooked, WAITING queue
-  refreshPendingOrders() {
-    this.http.get<OrderList>(this.roleRoute + "/get_waiting/").subscribe(
-      (data) => {
-        if (data.success) {
-          this.ordersPending = data.message
-        } else {
-          this.ordersPendingMessage = "Error"
-        }
-      },
-      (err) => {
-        this.ordersPendingMessage = "Error: " + err.statusText
-      }
-    )
-  }
-
   getTables() {
     this.tablesMessage = undefined
     // this.tablesCurrent = undefined
 
-    this.http.get<TableList>(this.roleRoute + "/get_tables/").subscribe(
+    this.http.get<TableList>(this.roleRoute + "/tables").subscribe(
       (data) => {
         if (data.success) {
           this.tablesCurrent = data.message
@@ -177,7 +178,7 @@ export class CashierComponent {
   }
 
   getAvgProcessingTime() {
-    this.http.get<NormalResponse>(this.roleRoute + "/get_avg_time/").subscribe(
+    this.http.get<NormalResponse>(this.roleRoute + "/averageProcessingTime").subscribe(
       (data) => {
         if (data.success) {
           this.avgTimeMessage = "The average cooking time in the kitchen is: " + data.message + " minutes"
@@ -192,7 +193,7 @@ export class CashierComponent {
   }
 
   getDailyRevenue() {
-    this.http.get<NormalResponse>(this.roleRoute + "/get_daily_revenue/").subscribe(
+    this.http.get<NormalResponse>(this.roleRoute + "/dailyRevenue").subscribe(
       (data) => {
         if (data.success) {
           this.revenueMessage = "Today €" + data.message + " were made in revenue"
