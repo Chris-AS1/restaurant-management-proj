@@ -32,7 +32,7 @@ export class BartenderComponent {
   refreshProcessingOrders() {
     this.ordersProcessingMessage = undefined
 
-    this.http.get<OrderList>(this.roleRoute + "/get_processing/").subscribe(
+    this.http.get<OrderList>(this.roleRoute + "/orders/processing").subscribe(
       (data) => {
         if (data.success) {
           const agg_orders = aggregateOrdersByTable(data.message)
@@ -48,7 +48,7 @@ export class BartenderComponent {
   }
 
   finishOrder(table_num: number) {
-    this.http.get<NormalResponse>(this.roleRoute + "/finish_order/" + table_num).subscribe(
+    this.http.put<NormalResponse>(this.roleRoute + "/orders/" + table_num + "/finish", {}).subscribe(
       (data) => {
         this.refreshProcessingOrders()
         this.ordersProcessingMessage = data.message

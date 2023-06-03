@@ -14,7 +14,7 @@ router.use(jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }),
 );
 
 // Orders in the WAITING queue
-router.get('/get_waiting', function(req, res) {
+router.get('/orders/waiting', function(req, res) {
     getWaitingOrders().then(
         data => {
             res.status(200)
@@ -27,7 +27,7 @@ router.get('/get_waiting', function(req, res) {
 });
 
 // Get orders that are being cooked
-router.get('/get_processing', function(req, res) {
+router.get('/orders/processing', function(req, res) {
     getProcessingOrders().then(
         data => {
             res.status(200)
@@ -40,7 +40,7 @@ router.get('/get_processing', function(req, res) {
 });
 
 // Start cooking orders for a table
-router.get('/begin_order/:table_id', function(req, res) {
+router.put('/orders/:table_id/start', function(req, res) {
     const table_id = parseInt(req.params.table_id)
     startProcessing(table_id).then(
         data => {
@@ -55,7 +55,7 @@ router.get('/begin_order/:table_id', function(req, res) {
 });
 
 // Finish cooking orders for a table
-router.get('/finish_order/:table_id', function(req, res) {
+router.put('/orders/:table_id/finish', function(req, res) {
     const table_id = parseInt(req.params.table_id)
     finishProcessing(table_id).then(
         data => {

@@ -76,7 +76,7 @@ export class UncookedComponent {
 
   // Bartender only, start order
   processOrder(table_num: number) {
-    this.http.get<NormalResponse>(this.roleRoute + "/begin_order/" + table_num).subscribe(
+    this.http.put<NormalResponse>(this.roleRoute + "/orders/" + table_num + "/start", {}).subscribe(
       (data) => {
         this.ordersPendingMessage = data.message;
         this.refreshPendingOrders()
