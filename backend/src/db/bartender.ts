@@ -3,7 +3,7 @@ import { Order } from "../models/order.model";
 import { tableModel } from "../schemas/table.schema";
 import { processingQueueParams, waitingQueueParams } from "./params";
 
-// Cook Version, query for WAITING queue, only food
+// Bartender Version, query for WAITING queue, only drinks
 export const getWaitingOrders = async () => {
     const res = await orderModel.aggregate([
         ...waitingQueueParams,

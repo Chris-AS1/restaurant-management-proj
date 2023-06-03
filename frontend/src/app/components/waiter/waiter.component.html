@@ -75,3 +75,7 @@
     {{ orderMessage }}
   </div>
 </div>
+
+<h1>Ready to Deliver</h1>
+<app-orderarray iconName="restaurant_menu" [showButton]="true" (buttonFunction)="deliverOrder($event)"  buttonText="DELIVER" [ordersProcessing]="ordersReady"></app-orderarray>
+

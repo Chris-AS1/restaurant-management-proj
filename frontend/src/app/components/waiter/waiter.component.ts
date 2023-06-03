@@ -6,9 +6,11 @@ import { environment } from 'environment';
 import { MatDialog } from '@angular/material/dialog';
 import { BookTableSeatsComponent } from '../dialogs/book-table-seats/book-table-seats.component';
 import { NormalResponse } from 'src/app/models/normal.response.model';
-import { FoodType } from 'src/app/models/order.model';
+import { FoodType, Order } from 'src/app/models/order.model';
 import { FoodList } from 'src/app/models/foodlist.response.model';
 import { NewOrder } from '../../models/neworder.model';
+import { OrderList } from 'src/app/models/orderlist.response.model';
+import { aggregateOrdersByTable } from '../shared/tools/tools';
 
 @Component({
   selector: 'app-waiter',
@@ -17,7 +19,7 @@ import { NewOrder } from '../../models/neworder.model';
 })
 export class WaiterComponent {
   roleRoute = environment.ROOT_URL + "/waiter"
-  intervalRefresh?: any
+  intervalRefresh: number[] = []
 
   tablesCurrent?: Table[]
   tablesMessage?: string
@@ -30,16 +32,24 @@ export class WaiterComponent {
 
   currentNewOrder?: NewOrder
 
+  ordersReady?: Order[]
+  ordersReadyMessage?: string
+
   constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getMenu()
     this.getTables()
-    this.intervalRefresh = setInterval(() => this.getTables(), environment.REFRESH_INTERVAL)
+    this.refreshReadyOrders()
+
+    this.intervalRefresh.push(setInterval(() => this.getTables(), environment.REFRESH_INTERVAL))
+    this.intervalRefresh.push(setInterval(() => this.refreshReadyOrders(), environment.REFRESH_INTERVAL))
   }
 
   ngOnDestroy() {
-    clearInterval(this.intervalRefresh)
+    for (let x of this.intervalRefresh) {
+      clearInterval(x)
+    }
   }
 
   openDialog(table_num: number, max_seats: number): void {
@@ -130,12 +140,46 @@ export class WaiterComponent {
         if (data.success) {
           this.orderMessage = data.message
           this.tableSelected = undefined
+          this.currentNewOrder = undefined
         } else {
           this.orderMessage = "Error"
         }
       },
       (err) => {
         this.orderMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
+  deliverOrder(table_num: number) {
+    this.http.put<NormalResponse>(this.roleRoute + "/orders/" + table_num + "/deliver", {}).subscribe(
+      (data) => {
+        if (data.success) {
+          this.orderMessage = data.message
+          this.tableSelected = undefined
+        } else {
+          this.orderMessage = "Error"
+        }
+      },
+      (err) => {
+        this.orderMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
+  // Get orders waiting to be delivered, READY queue
+  refreshReadyOrders() {
+    this.http.get<OrderList>(this.roleRoute + "/orders/ready").subscribe(
+      (data) => {
+        if (data.success) {
+          const agg_orders = aggregateOrdersByTable(data.message)
+          this.ordersReady = Object.values(agg_orders)
+        } else {
+          this.ordersReadyMessage = "Error"
+        }
+      },
+      (err) => {
+        this.ordersReadyMessage = "Error: " + err.statusText
       }
     )
   }

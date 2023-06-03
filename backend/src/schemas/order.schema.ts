@@ -27,6 +27,12 @@ export const orderSchema = new Schema({
         required: false,
         default: false,
     },
+    // has been delivered to the table
+    delivered: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
     // has been paid
     paid: {
         type: Boolean,

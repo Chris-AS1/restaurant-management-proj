@@ -31,3 +31,28 @@ export const processingQueueParams =
     }]
 
 
+export const undeliveredQueueParams =
+    [{
+        "$match": {
+            completed: true,
+            delivered: false,
+        },
+    },
+    {
+        "$lookup": {
+            from: "foodtypes",
+            localField: "items",
+            foreignField: "name",
+            as: "items_info"
+        }
+    },
+    {
+        "$lookup": {
+            from: "tables",
+            localField: "table_num",
+            foreignField: "table_num",
+            as: "tables_info"
+        }
+    }]
+
+

@@ -15,10 +15,6 @@ export const addUser = async (u: User) => {
     return newUser
 }
 
-export const getUser = async (username: string) => {
-    return await userModel.find({ username: username }).exec()
-}
-
 export const deleteUser = async (username: string) => {
     return await userModel.deleteOne({ username: username }).exec()
 }

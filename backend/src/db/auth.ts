@@ -16,7 +16,7 @@ export const genToken = (id: string, username: string, role: number) => {
         id: id,
         username: username,
         role: role,
-    }, environment.JWT_KEY, { expiresIn: '1h' })
+    }, environment.JWT_KEY, { expiresIn: '10h' })
 
     return token
 }

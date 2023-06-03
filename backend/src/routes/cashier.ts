@@ -5,7 +5,7 @@ import { RegisterResponse } from "../models/responses/register.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
 import { ReceiptResponse } from "../models/responses/receipt.response";
 import { TableList } from "../models/responses/tablelist.response.model"
-import { addUser, getUser, getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue, getAllUsers, deleteUser } from "../db/cashier"
+import { addUser,getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue, getAllUsers, deleteUser } from "../db/cashier"
 import { environment } from "../environment";
 import { expressjwt as jwt } from 'express-jwt';
 import { Roles } from "../models/user.roles.model";
