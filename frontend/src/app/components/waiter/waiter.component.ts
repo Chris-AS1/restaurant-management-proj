@@ -57,7 +57,7 @@ export class WaiterComponent {
   getTables() {
     this.tablesMessage = undefined
 
-    this.http.get<TableList>(this.roleRoute + "/get_tables/").subscribe(
+    this.http.get<TableList>(this.roleRoute + "/tables").subscribe(
       (data) => {
         if (data.success) {
           this.tablesCurrent = data.message
@@ -81,7 +81,7 @@ export class WaiterComponent {
   getMenu() {
     this.menuMessage = undefined
 
-    this.http.get<FoodList>(this.roleRoute + "/get_menu/").subscribe(
+    this.http.get<FoodList>(this.roleRoute + "/menu/").subscribe(
       (data) => {
         if (data.success) {
           this.menuCurrent = data.message
@@ -97,7 +97,7 @@ export class WaiterComponent {
 
   bookTable(table_num: number, seats_booked: number) {
     // TODO endpoint after jwt
-    this.http.post<NormalResponse>(this.roleRoute + "/book_table/" + table_num, { "seats_booked": seats_booked }).subscribe(
+    this.http.post<NormalResponse>(this.roleRoute + "/book/" + table_num, { "seats_booked": seats_booked }).subscribe(
       (data) => {
         if (data.success) {
           this.tablesMessage = data.message
@@ -125,7 +125,7 @@ export class WaiterComponent {
   }
 
   placeOrder() {
-    this.http.post<NormalResponse>(this.roleRoute + "/place_order/", this.currentNewOrder).subscribe(
+    this.http.post<NormalResponse>(this.roleRoute + "/orders/new", this.currentNewOrder).subscribe(
       (data) => {
         if (data.success) {
           this.orderMessage = data.message

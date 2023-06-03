@@ -19,6 +19,14 @@ export const getUser = async (username: string) => {
     return await userModel.find({ username: username }).exec()
 }
 
+export const deleteUser = async (username: string) => {
+    return await userModel.deleteOne({ username: username }).exec()
+}
+
+export const getAllUsers = async () => {
+    return await userModel.find({}).exec()
+}
+
 // Has to calculate total price, has to aggregate orders and set table to free
 export const getReceipt = async (table_num: number) => {
     const res = await orderModel.aggregate([

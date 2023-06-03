@@ -41,7 +41,7 @@ export class UncookedComponent {
   refreshPendingOrders() {
     this.ordersPendingMessage = undefined
 
-    this.http.get<OrderList>(this.roleRoute + "/get_waiting/").subscribe(
+    this.http.get<OrderList>(this.roleRoute + "/orders/waiting").subscribe(
       (data) => {
         if (data.success) {
           if (this.isCook || this.isBart) {
@@ -63,7 +63,7 @@ export class UncookedComponent {
 
   // Cook only, start order
   cookOrder(table_num: number) {
-    this.http.get<NormalResponse>(this.roleRoute + "/begin_order/" + table_num).subscribe(
+    this.http.put<NormalResponse>(this.roleRoute + "/orders/" + table_num + "/start", {}).subscribe(
       (data) => {
         this.ordersPendingMessage = data.message;
         this.refreshPendingOrders()
@@ -76,7 +76,7 @@ export class UncookedComponent {
 
   // Bartender only, start order
   processOrder(table_num: number) {
-    this.http.get<NormalResponse>(this.roleRoute + "/begin_order/" + table_num).subscribe(
+    this.http.put<NormalResponse>(this.roleRoute + "/orders/" + table_num + "/start", {}).subscribe(
       (data) => {
         this.ordersPendingMessage = data.message;
         this.refreshPendingOrders()

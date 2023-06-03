@@ -14,7 +14,7 @@ router.use(jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }),
     jwtGuarding(Roles.WAITER)
 );
 
-router.get('/get_tables', function(req, res) {
+router.get('/tables', function(req, res) {
     getTables().then(
         data => {
             res.status(200)
@@ -26,11 +26,10 @@ router.get('/get_tables', function(req, res) {
             })
 });
 
-router.post('/book_table/:table_num', jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }), function(req, res) {
+router.post('/book/:table_num', jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }), function(req, res) {
     const table_num: number = parseInt(req.params.table_num)
     const { seats_booked } = req.body
 
-    // TODO add JWT
     // @ts-ignore
     const user_id = req.auth.id
 
@@ -45,7 +44,7 @@ router.post('/book_table/:table_num', jwt({ secret: environment.JWT_KEY, algorit
             })
 });
 
-router.get('/get_menu', function(req, res) {
+router.get('/menu', function(req, res) {
     // TODO test
     getMenu().then(
         data => {
@@ -58,8 +57,7 @@ router.get('/get_menu', function(req, res) {
             })
 });
 
-router.post('/place_order/', function(req, res) {
-    // TODO test
+router.post('/orders/new', function(req, res) {
     const { table_num, items } = req.body
 
     placeOrder(table_num, items).then(

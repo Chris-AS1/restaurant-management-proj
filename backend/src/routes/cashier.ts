@@ -5,11 +5,12 @@ import { RegisterResponse } from "../models/responses/register.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
 import { ReceiptResponse } from "../models/responses/receipt.response";
 import { TableList } from "../models/responses/tablelist.response.model"
-import { addUser, getUser, getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue } from "../db/cashier"
+import { addUser, getUser, getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue, getAllUsers, deleteUser } from "../db/cashier"
 import { environment } from "../environment";
 import { expressjwt as jwt } from 'express-jwt';
 import { Roles } from "../models/user.roles.model";
 import { jwtGuarding } from "../db/auth";
+import { UserListResponse } from "../models/responses/userlist.response.model";
 
 var router = express.Router();
 
@@ -17,7 +18,7 @@ router.use(jwt({ secret: environment.JWT_KEY, algorithms: ["HS256"] }),
     jwtGuarding(Roles.CASHIER)
 );
 
-router.post('/add_user', async function(req, res) {
+router.post('/user', async function(req, res) {
     const { username, password, role }: User = req.body.user
     const u: User = {
         username: username,
@@ -29,7 +30,7 @@ router.post('/add_user', async function(req, res) {
     addUser(u).then(
         data => {
             res.status(200)
-            res.send({ success: true, message: "Added user " + data.username} as RegisterResponse)
+            res.send({ success: true, message: "Added user " + data.username } as RegisterResponse)
         }
     ).catch(
         err => {
@@ -39,20 +40,38 @@ router.post('/add_user', async function(req, res) {
     )
 });
 
-router.get('/get_user/:usr', async function(req, res) {
-    getUser(req.params.usr).then(
+router.get('/user', async function(req, res) {
+    getAllUsers().then(
         data => {
             res.status(200)
-            res.send({ success: true, message: JSON.stringify(data) } as NormalResponse)
-        }).catch(
-            err => {
-                res.status(403)
-                res.send({ success: false, message: "Error retrieving users" } as NormalResponse)
-            })
+            res.send({ success: true, message: data } as UserListResponse)
+        }
+    ).catch(
+        err => {
+            res.status(400)
+            res.send({ success: false, message: "Error retrieving users" } as NormalResponse)
+        }
+    )
+});
+
+router.delete('/user', async function(req, res) {
+    const { username }: User = req.body.user
+
+    deleteUser(username).then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: "Removed user " + username } as NormalResponse)
+        }
+    ).catch(
+        err => {
+            res.status(400)
+            res.send({ success: false, message: "Error while deleting user" } as NormalResponse)
+        }
+    )
 });
 
 // All orders except ones already paid
-router.get('/get_unpaid', function(req, res) {
+router.get('/orders/unpaid', function(req, res) {
     getUnpaidOrders().then(
         data => {
             res.status(200)
@@ -64,7 +83,7 @@ router.get('/get_unpaid', function(req, res) {
             })
 });
 
-router.get('/get_receipt/:table_id', function(req, res) {
+router.get('/receipt/:table_id', function(req, res) {
     const table_id = parseInt(req.params.table_id)
     getReceipt(table_id).then(
         data => {
@@ -78,7 +97,7 @@ router.get('/get_receipt/:table_id', function(req, res) {
 
 });
 
-router.get('/pay_receipt/:table_id', function(req, res) {
+router.put('/receipt/:table_id', function(req, res) {
     const table_id = parseInt(req.params.table_id)
     payReceipt(table_id).then(
         data => {
@@ -92,7 +111,7 @@ router.get('/pay_receipt/:table_id', function(req, res) {
 });
 
 // Orders in the WAITING queue
-router.get('/get_waiting', function(req, res) {
+router.get('/orders/waiting', function(req, res) {
     getWaitingOrders().then(
         data => {
             res.status(200)
@@ -105,7 +124,7 @@ router.get('/get_waiting', function(req, res) {
 });
 
 
-router.get('/get_tables', function(req, res) {
+router.get('/tables', function(req, res) {
     getTables().then(
         data => {
             res.status(200)
@@ -117,7 +136,7 @@ router.get('/get_tables', function(req, res) {
             })
 });
 
-router.get('/get_avg_time', function(req, res) {
+router.get('/averageProcessingTime', function(req, res) {
     getAvgProcTime().then(
         data => {
             res.status(200)
@@ -129,8 +148,8 @@ router.get('/get_avg_time', function(req, res) {
             })
 });
 
-router.get('/get_daily_revenue', function(req, res) {
-    // TODO finish implementation
+router.get('/dailyRevenue', function(req, res) {
+    // TODO check implementation
     getDailyRevenue().then(
         data => {
             res.status(200)
