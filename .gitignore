@@ -16,4 +16,4 @@ environment*.ts
 .env
 db_data
 swagger*
-
+*doc.html*
