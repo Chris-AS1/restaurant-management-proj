@@ -1,10 +1,9 @@
-import { log } from "console"
 import { FoodType, Order } from "../models/order.model"
 import { Table } from "../models/table.model"
 import { foodTypeModel } from "../schemas/foodtype.schema"
 import { orderModel } from "../schemas/order.schema"
 import { tableModel } from "../schemas/table.schema"
-import { undeliveredQueueParams, waitingQueueParams } from "./params"
+import { undeliveredQueueParams } from "./params"
 import mongoose from "mongoose"
 
 const pino = require('pino')()
@@ -34,7 +33,8 @@ export const bookTable = async (table_num: number, occupied_seats: number, waite
     const table = await tableModel.findOne({ table_num: table_num }).exec()
     if (table) {
         table.occupied_seats = Math.min(occupied_seats, table.seats)
-        table.waiter_id = waiter_id
+        if (occupied_seats) table.waiter_id = waiter_id
+        else table.waiter_id = undefined
         await table.save()
     }
 }
@@ -44,17 +44,17 @@ export const placeOrder = async (table_num: number, items: string[]) => {
     let new_items = []
     let menu_dict: any = {}
 
-    for(let f of menu) {
+    for (let f of menu) {
         menu_dict[f.name] = f
     }
 
-    for(let i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
         new_items[i] = menu_dict[items[i]]
     }
 
     const drinks = new_items.filter(i => i.drink)
     const foods = new_items.filter(i => !i.drink)
-    
+
     await new orderModel({
         table_num: table_num,
         items: drinks.map(i => i.name),

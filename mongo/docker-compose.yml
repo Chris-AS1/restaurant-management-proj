@@ -17,7 +17,7 @@ services:
 volumes:
   mongodata:
     name: taw-project_mongodata
-    external: true
+    # external: true
 
 networks:
   taw_default:

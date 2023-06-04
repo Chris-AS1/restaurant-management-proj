@@ -48,7 +48,6 @@ router.put('/orders/:table_id/start', function(req, res) {
             res.send({ success: true, message: data } as NormalResponse)
         }).catch(
             err => {
-                console.log(err)
                 res.status(400)
                 res.send({ success: false, message: "Error starting cooking" } as NormalResponse)
             })

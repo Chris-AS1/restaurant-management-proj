@@ -8,7 +8,7 @@ export const tableSchema = new Schema({
     },
     waiter_id: {
         type: Schema.Types.ObjectId,
-        required: true,
+        required: false,
     },
     seats: {
         type: Number,
