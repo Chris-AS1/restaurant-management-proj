@@ -5,7 +5,7 @@ import { RegisterResponse } from "../models/responses/register.response.model";
 import { OrderList } from "../models/responses/orderlist.response.model";
 import { ReceiptResponse } from "../models/responses/receipt.response";
 import { TableList } from "../models/responses/tablelist.response.model"
-import { addUser,getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue, getAllUsers, deleteUser } from "../db/cashier"
+import { addUser,getReceipt, payReceipt, getWaitingOrders, getUnpaidOrders, getTables, getAvgProcTime, getDailyRevenue, getAllUsers, deleteUser, getProcessingOrders } from "../db/cashier"
 import { environment } from "../environment";
 import { expressjwt as jwt } from 'express-jwt';
 import { Roles } from "../models/user.roles.model";
@@ -70,19 +70,6 @@ router.delete('/user/:username', async function(req, res) {
     )
 });
 
-// All orders except ones already paid
-router.get('/orders/unpaid', function(req, res) {
-    getUnpaidOrders().then(
-        data => {
-            res.status(200)
-            res.send({ success: true, message: data } as OrderList)
-        }).catch(
-            err => {
-                res.status(400)
-                res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
-            })
-});
-
 router.get('/receipt/:table_id', function(req, res) {
     const table_id = parseInt(req.params.table_id)
     getReceipt(table_id).then(
@@ -123,6 +110,32 @@ router.get('/orders/waiting', function(req, res) {
             })
 });
 
+
+// Orders in the PROCESSING queue
+router.get('/orders/processing', function(req, res) {
+    getProcessingOrders().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as OrderList)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
+            })
+});
+
+// All orders except PAID
+router.get('/orders/unpaid', function(req, res) {
+    getUnpaidOrders().then(
+        data => {
+            res.status(200)
+            res.send({ success: true, message: data } as OrderList)
+        }).catch(
+            err => {
+                res.status(400)
+                res.send({ success: false, message: "Error retrieving orders" } as NormalResponse)
+            })
+});
 
 router.get('/tables', function(req, res) {
     getTables().then(

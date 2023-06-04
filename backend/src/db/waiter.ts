@@ -55,19 +55,22 @@ export const placeOrder = async (table_num: number, items: string[]) => {
     const drinks = new_items.filter(i => i.drink)
     const foods = new_items.filter(i => !i.drink)
 
-    await new orderModel({
-        table_num: table_num,
-        items: drinks.map(i => i.name),
-        order_time: Date.now(),
-        paid: false,
-    }).save()
-
-    await new orderModel({
-        table_num: table_num,
-        items: foods.map(i => i.name),
-        order_time: Date.now(),
-        paid: false,
-    }).save()
+    if (drinks.length > 0) {
+        await new orderModel({
+            table_num: table_num,
+            items: drinks.map(i => i.name),
+            order_time: Date.now(),
+            paid: false,
+        }).save()
+    }
+    if (foods.length > 0) {
+        await new orderModel({
+            table_num: table_num,
+            items: foods.map(i => i.name),
+            order_time: Date.now(),
+            paid: false,
+        }).save()
+    }
 }
 
 export const deliverOrder = async (table_num: number) => {

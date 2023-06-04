@@ -38,6 +38,9 @@ export class CashierComponent {
   ordersPending?: Order[]
   ordersPendingMessage?: string
 
+  ordersProcessing?: Order[]
+  ordersProcessingMessage?: string
+
   tablesCurrent?: Table[]
   tablesMessage?: string
 
@@ -53,9 +56,11 @@ export class CashierComponent {
     this.refreshPendingOrders()
     this.getTables()
     this.refreshUsers()
+    this.refreshProcessingOrders()
 
     this.intervalRefresh.push(setInterval(() => this.refreshOrders(), environment.REFRESH_INTERVAL))
     this.intervalRefresh.push(setInterval(() => this.refreshPendingOrders(), environment.REFRESH_INTERVAL))
+    this.intervalRefresh.push(setInterval(() => this.refreshProcessingOrders(), environment.REFRESH_INTERVAL))
     this.intervalRefresh.push(setInterval(() => this.getTables(), environment.REFRESH_INTERVAL))
     this.intervalRefresh.push(setInterval(() => this.refreshUsers(), environment.REFRESH_INTERVAL))
   }
@@ -166,6 +171,22 @@ export class CashierComponent {
       },
       (err) => {
         this.ordersPendingMessage = "Error: " + err.statusText
+      }
+    )
+  }
+
+  // Get orders that are being worked on, PROCESSING queue
+  refreshProcessingOrders() {
+    this.http.get<OrderList>(this.roleRoute + "/orders/processing").subscribe(
+      (data) => {
+        if (data.success) {
+          this.ordersProcessing = data.message
+        } else {
+          this.ordersProcessingMessage = "Error"
+        }
+      },
+      (err) => {
+        this.ordersProcessingMessage = "Error: " + err.statusText
       }
     )
   }

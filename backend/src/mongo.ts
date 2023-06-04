@@ -11,7 +11,7 @@ mongoose
     .connect(environment.MONGO_URL, { retryWrites: true, w: 'majority' })
     .then(() => {
         pino.info("Connected to MongoDB");
-        // Promise.resolve(insertDefaultValues()).catch(e => { pino.error(e) })
+        Promise.resolve(insertDefaultValues()).catch(e => { pino.error(e) })
     })
     .catch((error) => pino.error(error));
 

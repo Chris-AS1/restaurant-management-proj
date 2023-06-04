@@ -99,9 +99,17 @@ export const getUnpaidOrders = async () => {
 
 // Cashier Version, query for WAITING queue, both food/drinks
 export const getWaitingOrders = async () => {
-    // WAITING queue
     const res = await orderModel.aggregate([
         ...waitingQueueParams,
+    ]).exec()
+
+    return res as Order[]
+}
+
+// Cashier Version, query for PROCESSING queue, both food/drinks
+export const getProcessingOrders = async () => {
+    const res = await orderModel.aggregate([
+        ...processingQueueParams,
     ]).exec()
 
     return res as Order[]

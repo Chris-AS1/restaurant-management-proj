@@ -90,12 +90,13 @@
 
 
 <h1>Waiting Queue</h1>
-<!-- <button mat-raised-button type="button" color="primary" (click)="refreshPendingOrders()">Refresh</button> -->
 <app-orderarray iconName="restaurant_menu" [showButton]="false" [ordersProcessing]="ordersPending"></app-orderarray>
+
+<h1>Being Prepared</h1>
+<app-orderarray iconName="restaurant_menu" [showButton]="false" [ordersProcessing]="ordersProcessing"></app-orderarray>
 
 <div id="view_tables">
   <h1>View Tables</h1>
-  <!-- <button mat-raised-button color="primary" type="button" (click)="getTables()">Refresh</button> -->
 
   <div class="tables-div" *ngIf="tablesCurrent !== undefined">
     <mat-card class="table-card" *ngFor="let table of tablesCurrent">
