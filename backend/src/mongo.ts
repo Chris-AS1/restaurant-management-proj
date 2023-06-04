@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 import { environment } from "./environment"
-import { orderModel } from './schemas/order.schema';
 import { foodTypeModel } from './schemas/foodtype.schema';
 import { tableModel } from './schemas/table.schema';
-import { userModel } from './schemas/user.schema';
 import { addUser } from './db/cashier';
 
 const pino = require('pino')()
