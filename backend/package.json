@@ -8,6 +8,7 @@
         "watch": "pnpm tsc-watch --onSuccess \"pnpm run run\""
     },
     "dependencies": {
+        "argon2": "^0.30.3",
         "cors": "^2.8.5",
         "dotenv": "^16.0.3",
         "express": "^4.18.2",

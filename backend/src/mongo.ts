@@ -4,6 +4,7 @@ import { orderModel } from './schemas/order.schema';
 import { foodTypeModel } from './schemas/foodtype.schema';
 import { tableModel } from './schemas/table.schema';
 import { userModel } from './schemas/user.schema';
+import { addUser } from './db/cashier';
 
 const pino = require('pino')()
 
@@ -16,7 +17,7 @@ mongoose
     .catch((error) => pino.error(error));
 
 const insertDefaultValues = async () => {
-    // Insert the Manu
+    // Insert the Menu
     const CopertoType = new foodTypeModel({
         name: "Coperto",
         price: 1.5,
@@ -46,24 +47,6 @@ const insertDefaultValues = async () => {
         drink: true
     })
 
-    const DrinkOrder1 = new orderModel({
-        items: [WaterType.name, CocaColaType.name],
-        table_num: 23,
-        order_time: Date.now()
-    })
-
-    const DrinkOrder2 = new orderModel({
-        items: [WaterType.name],
-        table_num: 42,
-        order_time: Date.now()
-    })
-
-    const FoodOrder1 = new orderModel({
-        items: [SpaghettiType.name, PizzaType.name, CopertoType.name],
-        table_num: 42,
-        order_time: Date.now()
-    })
-
     // Insert Tables
     const Table23 = new tableModel({
         table_num: 23,
@@ -75,38 +58,40 @@ const insertDefaultValues = async () => {
         seats: 10,
     })
 
-    // Insert Default Users
-    const CashierUser = new userModel({
-        username: "cashier",
-        password: "asd",
-        role: 1,
-    })
+    try {
+        // Insert Default Users
+        await addUser({
+            username: "cashier",
+            password: "asd",
+            role: 1,
+        })
 
-    const CookUser = new userModel({
-        username: "cook",
-        password: "asd",
-        role: 2,
-    })
-    const BartenderUser = new userModel({
-        username: "bartender",
-        password: "asd",
-        role: 3,
-    })
-    const WaiterUser = new userModel({
-        username: "waiter",
-        password: "asd",
-        role: 4,
-    })
+        await addUser({
+            username: "cook",
+            password: "asd",
+            role: 2,
+        })
+
+        await addUser({
+            username: "bartender",
+            password: "asd",
+            role: 3,
+        })
+
+        await addUser({
+            username: "waiter",
+            password: "asd",
+            role: 4,
+        })
+    } catch (error) {
+        pino.error(error)
+    }
 
     Promise.all([CopertoType.save(),
     SpaghettiType.save(),
     PizzaType.save(),
     WaterType.save(),
     CocaColaType.save(),
-    CashierUser.save(),
-    CookUser.save(),
-    BartenderUser.save(),
-    WaiterUser.save(),
     Table23.save(),
     Table42.save()])
         .then(data => pino.info(data))

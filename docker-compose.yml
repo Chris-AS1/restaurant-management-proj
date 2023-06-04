@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile.prod
     container_name: taw-backend
     ports:
-      - 3000:3000
+      - 13000:3000
     networks:
       - taw_default
     depends_on:

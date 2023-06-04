@@ -21,7 +21,6 @@ export class LoginComponent {
 
     console.log(username, password)
 
-    // TODO: test login
     this.Auth.getUserDetails({ username, password }).subscribe(
       (data) => {
         if (data.success) {
@@ -30,9 +29,12 @@ export class LoginComponent {
           this.Auth.setLoggedIn(true)
           this.Auth.setUsername(username)
 
-          // @ts-ignore
-          const role = jwt_decode(data.token).role
+          const jwt: any = jwt_decode(data.token)
+          const role = jwt.role
+          const id = jwt.id
+
           this.Auth.setRole(role)
+          this.Auth.setID(id)
 
           if (role in Roles) {
             this.router.navigate([Roles[role].toLowerCase()])
@@ -43,9 +45,12 @@ export class LoginComponent {
         } else {
           this.loginMessage = data.message
           localStorage.removeItem('token')
+
           this.Auth.setLoggedIn(false)
           this.Auth.setUsername(undefined)
           this.Auth.setRole(undefined)
+          this.Auth.setID(undefined)
+
           this.router.navigate([''])
         }
       })

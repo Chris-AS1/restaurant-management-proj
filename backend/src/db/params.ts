@@ -30,7 +30,6 @@ export const processingQueueParams =
         }
     }]
 
-
 export const undeliveredQueueParams =
     [{
         "$match": {
@@ -54,5 +53,4 @@ export const undeliveredQueueParams =
             as: "tables_info"
         }
     }]
-
 

@@ -6,13 +6,20 @@ import { Receipt } from "../models/receipt.model";
 import { Table } from "../models/table.model";
 import { tableModel } from "../schemas/table.schema";
 import { processingQueueParams, waitingQueueParams } from "./params";
+import * as argon2 from "argon2";
 
 const pino = require('pino')()
 
 export const addUser = async (u: User) => {
-    const newUser = new userModel(u)
-    await newUser.save()
-    return newUser
+    try {
+        u.password = await argon2.hash(u.password);
+        const newUser = new userModel(u)
+        await newUser.save()
+        return newUser
+    } catch (error) {
+        pino.error(error)
+        throw error
+    }
 }
 
 export const deleteUser = async (username: string) => {

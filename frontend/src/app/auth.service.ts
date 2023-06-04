@@ -14,9 +14,10 @@ export class AuthService {
   private loggedStatusBehave: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private loggedUsername?: string;
-  private loggedUsernameBehave: BehaviorSubject<string|undefined> = new BehaviorSubject<string|undefined>(undefined);
+  private loggedUsernameBehave: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
 
   private loggedRole?: Roles;
+  private loggedID?: string
 
   constructor(private http: HttpClient) { }
 
@@ -35,6 +36,10 @@ export class AuthService {
     return this.loggedUsername;
   }
 
+  get currentID() {
+    return this.loggedID
+  }
+
   get currentUsernameBehave() {
     return this.loggedUsernameBehave;
   }
@@ -51,6 +56,10 @@ export class AuthService {
 
   setRole(role?: Roles) {
     this.loggedRole = role;
+  }
+
+  setID(id?: string) {
+    this.loggedID = id
   }
 
   getUserDetails(u: User) {

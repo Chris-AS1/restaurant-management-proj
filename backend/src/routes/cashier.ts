@@ -26,7 +26,6 @@ router.post('/user', async function(req, res) {
         role: role,
     }
 
-    // TODO encrypt password
     addUser(u).then(
         data => {
             res.status(200)

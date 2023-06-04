@@ -11,6 +11,7 @@ import { FoodList } from 'src/app/models/foodlist.response.model';
 import { NewOrder } from '../../models/neworder.model';
 import { OrderList } from 'src/app/models/orderlist.response.model';
 import { aggregateOrdersByTable } from '../shared/tools/tools';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-waiter',
@@ -35,7 +36,7 @@ export class WaiterComponent {
   ordersReady?: Order[]
   ordersReadyMessage?: string
 
-  constructor(private http: HttpClient, public dialog: MatDialog) { }
+  constructor(private http: HttpClient, public dialog: MatDialog, private Auth: AuthService) { }
 
   ngOnInit() {
     this.getMenu()
@@ -72,8 +73,9 @@ export class WaiterComponent {
         if (data.success) {
           this.tablesCurrent = data.message
           let tmpTables = []
+          // TODO add id check
           for (let table of this.tablesCurrent) {
-            if (table.occupied_seats > 0) {
+            if (table.occupied_seats > 0 && table.waiter_id === this.Auth.currentID) {
               tmpTables.push(table)
             }
           }

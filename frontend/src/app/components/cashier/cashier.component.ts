@@ -143,7 +143,6 @@ export class CashierComponent {
 
     this.http.get<OrderList>(this.roleRoute + "/orders/unpaid").subscribe(
       (data) => {
-        // TODO sort by table
         const tables_to_pay = new Set<number>()
         for (let order of data.message) {
           tables_to_pay.add(order.table_num)
