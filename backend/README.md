@@ -21,5 +21,6 @@ Templates of the env files have been provided, they should be filled out so that
 Following files should be changed: `.env.sample, /src/environment.ts.sample, /src/environment.prod.ts.sample, /src/environment.dev.ts.sample`
 
 `/src/environment.ts.sample` should just be renamed, no changes are needed.
+
 `environment.prod.ts` will be automatically used with Docker builds, or when `NODE_ENV=production`. Otherwise `environment.dev.ts` will be used instead
 
