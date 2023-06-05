@@ -29,3 +29,9 @@ docker run --name frontend_dev --publish 4444:4200 local/taw-project-frontend:1.
 
 This will start a `node` server in development mode, running `ng serve`. Not suited for production.
 
+## Environment files
+Templates of the env files have been provided, they should be filled out so that the program can utilize its variables.
+Following files should be changed: `environment.ts.sample, environment.prod.ts.sample`.
+
+`environment.prod.ts` will be automatically used when building for production with `pnpm prod`.
+
