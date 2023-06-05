@@ -2,6 +2,11 @@
 
 Frontend code using the Angular framework. Configured to use the `pnpm` package manager, you can change this setting in `angular.json`
 
+Install required packages with
+```
+pnpm install
+```
+
 ## Development Server
 
 Run `pnpm start` which is configured as alias for `ng serve --poll=2000`. This will start a dev server listening on `http://localhost:4200/`. The application will automatically reload if you change any of the source files.

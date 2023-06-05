@@ -2,6 +2,11 @@
 
 Backend API written in node+typescript. Using the `express` frameworks at its core. By default on port 3000.
 
+Install required packages with
+```
+pnpm install
+```
+
 ## Development Server
 
 Run `pnpm start` which will build the files with `tsc` and then start the API server using `node`
