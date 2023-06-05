@@ -21,7 +21,7 @@ There are 2 ways of deploying a docker container for this project.
 ```
 pnpm prod
 docker build -t local/taw-project-frontend:1.0 -f ./Dockerfile.prod .
-docker run --name frontend_nginx --publish 4444:80 local/taw-project-frontend:1.0
+docker run --name frontend_nginx --publish 14200:80 local/taw-project-frontend:1.0
 ```
 
 This will deploy a `nginx` instance serving the built files under `dist/`.
@@ -29,7 +29,7 @@ This will deploy a `nginx` instance serving the built files under `dist/`.
 ### Development (node/ng)
 ```
 docker build -t local/taw-project-frontend:1.0 -f ./Dockerfile.dev .
-docker run --name frontend_dev --publish 4444:4200 local/taw-project-frontend:1.0
+docker run --name frontend_dev --publish 14200:4200 local/taw-project-frontend:1.0
 ```
 
 This will start a `node` server in development mode, running `ng serve`. Not suited for production.

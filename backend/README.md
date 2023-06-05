@@ -16,7 +16,7 @@ Run `pnpm start` which will build the files with `tsc` and then start the API se
 ```
 pnpm build
 docker build -t local/taw-project-backend:1.0 -f ./Dockerfile.prod .
-docker run --name backend_node --publish 3000:3000 local/taw-project-backend:1.0
+docker run --name backend_node --publish 13000:3000 local/taw-project-backend:1.0
 ```
 
 This will deploy a `node` instance serving the build files under `dist/`.
