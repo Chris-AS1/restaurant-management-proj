@@ -19,8 +19,6 @@ export class LoginComponent {
     const username = f.value.username
     const password = f.value.password
 
-    console.log(username, password)
-
     this.Auth.getUserDetails({ username, password }).subscribe(
       (data) => {
         if (data.success) {
@@ -40,19 +38,19 @@ export class LoginComponent {
             this.router.navigate([Roles[role].toLowerCase()])
           } else {
             console.log("Role out of scope", role);
-            this.router.navigate([''])
           }
         } else {
-          this.loginMessage = data.message
-          localStorage.removeItem('token')
-
-          this.Auth.setLoggedIn(false)
-          this.Auth.setUsername(undefined)
-          this.Auth.setRole(undefined)
-          this.Auth.setID(undefined)
-
-          this.router.navigate([''])
+          this.loginMessage = "Error"
         }
+      },
+      (err) => {
+        this.loginMessage = "Error: " + err.statusText
+        localStorage.removeItem('token')
+
+        this.Auth.setLoggedIn(false)
+        this.Auth.setUsername(undefined)
+        this.Auth.setRole(undefined)
+        this.Auth.setID(undefined)
       })
   }
 }
