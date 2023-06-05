@@ -73,7 +73,6 @@ export class WaiterComponent {
         if (data.success) {
           this.tablesCurrent = data.message
           let tmpTables = []
-          // TODO add id check
           for (let table of this.tablesCurrent) {
             if (table.occupied_seats > 0 && table.waiter_id === this.Auth.currentID) {
               tmpTables.push(table)
