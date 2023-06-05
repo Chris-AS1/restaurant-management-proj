@@ -7,4 +7,5 @@ A `docker-compose.yml` file is provided. Before launching it the environment fil
 docker compose build
 docker compose up
 ```
-
+## Default Users
+By deafult there are 4 users: cashier, cook, bartender and waiter. All of them have "asd" as default password for demoing purposes.
