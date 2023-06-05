@@ -1,0 +1,4 @@
+export const environment = {
+  ROOT_URL: "http://localhost:3000"
+  REFRESH_INTERVAL: 2000,
+};

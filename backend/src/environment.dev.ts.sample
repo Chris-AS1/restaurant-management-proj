@@ -1,0 +1,4 @@
+export const environment = {
+    MONGO_URL: "mongodb://USERNAME:PASSWORD@127.0.0.1:27017/DBNAME?authSource=admin",
+    JWT_KEY: "changeme",
+};

@@ -1,0 +1,4 @@
+export const environment = {
+  ROOT_URL : "http://localhost:13000", // without trailing slash, default for docker
+  REFRESH_INTERVAL: 2000,
+};

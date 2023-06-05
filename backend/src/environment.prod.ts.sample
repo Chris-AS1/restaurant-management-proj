@@ -1,5 +1,5 @@
 export const environment = {
-    MONGO_URL: "mongodb://usr:psw@ip:port/dbname?authSource=admin",
+    MONGO_URL: "mongodb://USERNAME:PASSWORD@taw-mongo:27017/DBNAME?authSource=admin", // IP used in docker-compose
     JWT_KEY: "changeme",
 };
 

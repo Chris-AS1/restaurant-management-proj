@@ -19,7 +19,7 @@ docker build -t local/taw-project-frontend:1.0 -f ./Dockerfile.prod .
 docker run --name frontend_nginx --publish 4444:80 local/taw-project-frontend:1.0
 ```
 
-This will deploy a `nginx` server serving the build files under `dist/`.
+This will deploy a `nginx` instance serving the built files under `dist/`.
 
 ### Development (node/ng)
 ```
