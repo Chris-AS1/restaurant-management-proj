@@ -12,14 +12,12 @@ pnpm install
 Run `pnpm start` which will build the files with `tsc` and then start the API server using `node`
 
 ## Docker Deployment
-### Production
 ```
-pnpm build
-docker build -t local/taw-project-backend:1.0 -f ./Dockerfile.prod .
+docker build -t local/taw-project-backend:1.0 -f ./Dockerfile .
 docker run --name backend_node --publish 13000:3000 local/taw-project-backend:1.0
 ```
 
-This will deploy a `node` instance serving the build files under `dist/`.
+This will deploy a `node` instance, automatically compiling the source files.
 
 ## Environment files
 Templates of the env files have been provided, they should be filled out so that the program can utilize its variables.
