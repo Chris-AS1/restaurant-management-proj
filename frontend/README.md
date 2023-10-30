@@ -25,4 +25,3 @@ This will deploy a `nginx` instance serving the built source files.
 ## Environment files
 Templates of the env files have been provided, they should be filled out so that the program can utilize its variables.
 Following files should be changed: `environment.ts.sample, environment.prod.ts.sample`.
-
