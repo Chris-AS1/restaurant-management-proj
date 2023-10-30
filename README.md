@@ -1,6 +1,6 @@
 # Restaurant-Management Project
 Full stack application with the goal of handling booking/management of restaurant orders.
-Backend was built on top of node/express. Frontend was built with Angular and then served with nginx.
+Backend was built on top of node/express. Frontend was built with Angular and then served with nginx. More informations on other READMEs.
 
 ## Docker Deployment
 A `docker-compose.yml` file is provided. Before launching it the environment files have to be filled correctly and both `backend` and `frontend` have to be built.
